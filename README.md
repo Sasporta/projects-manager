@@ -23,7 +23,7 @@ Container: [Docker](https://www.docker.com/)
 Deployment: [render](https://render.com/)
 
 Packages:
-&nbsp; &nbsp; ORM - [TypeORM](https://www.postgresql.org/)
+&nbsp; &nbsp; ORM - [Prisma](https://www.prisma.io/)
 &nbsp; &nbsp; Linting - [ESLint](https://eslint.org/)
 &nbsp; &nbsp; styling - [Prettier](https://prettier.io/)
 &nbsp; &nbsp; Testing - [Jest](https://jestjs.io/)
