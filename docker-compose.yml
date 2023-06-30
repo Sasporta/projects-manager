@@ -8,11 +8,11 @@ services:
     ports:
       - 5432:5432
     env_file: .env
-    # volumes:
-    #   - ./src/seeds/localEnv/docker/seed_companies.sql:/docker-entrypoint-initdb.d/seed_companies.sql
-    #   - ./src/seeds/localEnv/docker/seed_employees.sql:/docker-entrypoint-initdb.d/seed_employees.sql
+  # TODO: decide if to seed the db with the postgres container (volumes?) or with the node container (entrypoint?)
+  # volumes:
+  #   - ./src/seeds/localEnv/docker/seed_companies.sql:/docker-entrypoint-initdb.d/seed_companies.sql
+  #   - ./src/seeds/localEnv/docker/seed_employees.sql:/docker-entrypoint-initdb.d/seed_employees.sql
 
 networks:
   default:
     name: projects-manager
-    

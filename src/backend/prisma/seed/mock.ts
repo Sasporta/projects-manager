@@ -1,4 +1,4 @@
-export default [
+const mock = [
   {
     name: 'projects-manager',
     description: 'A service that manage other projects',
@@ -30,3 +30,5 @@ export default [
     },
   },
 ];
+
+export default mock;

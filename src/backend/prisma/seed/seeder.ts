@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 import projects from './mock';
 
-const prisma = new PrismaClient();
-
 const seeder = async () => {
+  const prisma = new PrismaClient();
+
   try {
     for (let project of projects) {
       await prisma.project.create({ data: project });

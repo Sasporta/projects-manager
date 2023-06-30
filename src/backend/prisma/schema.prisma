@@ -13,7 +13,7 @@ datasource db {
 
 model project {
   id              String       @id @default(uuid())
-  maintenance    maintenance?
+  maintenance     maintenance?
   name            String       @unique
   description     String
   url             String
