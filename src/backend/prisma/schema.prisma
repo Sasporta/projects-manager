@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// This was inserted by `prisma init`:
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model project {
+  id              String        @id @default(uuid())
+  maintenance     maintenance[]
+  name            String        @unique @db.VarChar(30)
+  description     String        @db.VarChar(100)
+  url             String        @db.VarChar(50)
+  lastMaintenance DateTime?
+  nextMaintenance DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model maintenance {
+  id        String   @id @default(uuid())
+  projectId String
+  project   project  @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  hours     Int      @default(3)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
