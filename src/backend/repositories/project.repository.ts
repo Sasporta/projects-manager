@@ -2,6 +2,29 @@ import { prisma } from '../lib/prisma';
 
 type Data = { id: string };
 
+export const getAll = async () => {
+  try {
+    const findManyArgs = {
+      select: {
+        id: true,
+        name: true,
+        url: true,
+        nextMaintenance: true,
+      },
+    };
+
+    const projects = await prisma.project.findMany(findManyArgs);
+
+    return projects;
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `msg: ${e.message}`;
+
+      throw new Error(`project.repository.getAll, ${args}`);
+    }
+  }
+};
+
 export const getOne = async (data: Data) => {
   try {
     const { id } = data;
@@ -15,6 +38,7 @@ export const getOne = async (data: Data) => {
         url: true,
         lastMaintenance: true,
         nextMaintenance: true,
+        createdAt: true,
       },
     };
 
