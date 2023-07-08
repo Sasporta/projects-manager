@@ -6,7 +6,7 @@ const { env } = process;
 
 const config = {
   env: {
-    port: env.PORT || '3000',
+    port: Number(env.PORT) || 3000,
   },
 };
 
