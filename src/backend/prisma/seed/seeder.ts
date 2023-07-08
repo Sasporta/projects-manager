@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import projects from './mock';
+import { projects } from './mock';
 
 const seeder = async () => {
   const prisma = new PrismaClient();

@@ -1,4 +1,4 @@
-const mock = [
+export const projects = [
   {
     name: 'projects-manager',
     description: 'A service that manage other projects',
@@ -31,4 +31,3 @@ const mock = [
   },
 ];
 
-export default mock;
