@@ -1,8 +1,15 @@
 import { prisma } from '../lib/prisma';
 
-type Data = { id: string };
+type ReadOneData = { id: string };
 
-export const getAll = async () => {
+type CreateData = {
+  name: string;
+  description: string;
+  url: string;
+  nextMaintenance: Date;
+};
+
+export const readAll = async () => {
   try {
     const findManyArgs = {
       select: {
@@ -21,12 +28,12 @@ export const getAll = async () => {
     if (e instanceof Error) {
       const args = `msg: ${e.message}`;
 
-      throw new Error(`project.repository.getAll, ${args}`);
+      throw new Error(`project.repository.readAll, ${args}`);
     }
   }
 };
 
-export const getOne = async (data: Data) => {
+export const readOne = async (data: ReadOneData) => {
   try {
     const { id } = data;
 
@@ -50,7 +57,41 @@ export const getOne = async (data: Data) => {
     if (e instanceof Error) {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
-      throw new Error(`project.repository.getOne, ${args}`);
+      throw new Error(`project.repository.readOne, ${args}`);
+    }
+  }
+};
+
+export const create = async (data: CreateData) => {
+  try {
+    const { name, description, url, nextMaintenance } = data;
+
+    const createArgs = {
+      data: {
+        name,
+        description,
+        url,
+        nextMaintenance,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        url: true,
+        lastMaintenance: true,
+        nextMaintenance: true,
+        createdAt: true,
+      },
+    };
+
+    const project = await prisma.project.create(createArgs);
+
+    return project;
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+      throw new Error(`project.repository.create, ${args}`);
     }
   }
 };
