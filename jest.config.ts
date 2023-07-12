@@ -9,7 +9,7 @@ const jestConfig: JestConfigWithTsJest = {
   collectCoverage: true,
   testEnvironment: 'node',
   coverageReporters: ['text-summary'],
-  collectCoverageFrom: ['src/routes/**'],
+  collectCoverageFrom: ['src/backend/**'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),

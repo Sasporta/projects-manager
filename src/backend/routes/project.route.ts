@@ -14,7 +14,12 @@ export const getAll = async (req: Request, res: Response) => {
 
     return res.json({ data: projects, error: null });
   } catch (e) {
-    // TODO: log error
+    if (e instanceof Error) {
+      const args = `msg: ${e.message}`;
+
+      // TODO: replace with logger
+      console.error(`project.route.getAll, ${args}`);
+    }
 
     // TODO: create a custom error handler
     return res.status(500).json({ data: null, error: 'Internal Server Error' });
@@ -32,7 +37,12 @@ export const getOne = async (req: Request, res: Response) => {
 
     return res.json({ data: project, error: null });
   } catch (e) {
-    // TODO: log error
+    if (e instanceof Error) {
+      const args = `msg: ${e.message}`;
+
+      // TODO: replace with logger
+      console.error(`project.route.getOne, ${args}`);
+    }
 
     // TODO: create a custom error handler
     return res.status(500).json({ data: null, error: 'Internal Server Error' });
@@ -49,7 +59,36 @@ export const post = async (req: Request, res: Response) => {
 
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
-    // TODO: log error
+    if (e instanceof Error) {
+      const args = `msg: ${e.message}`;
+
+      // TODO: replace with logger
+      console.error(`project.route.post, ${args}`);
+    }
+
+    // TODO: create a custom error handler
+    return res.status(500).json({ data: null, error: 'Internal Server Error' });
+  }
+};
+
+export const put = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const { name, description, url } = req.body;
+
+    const data = { id, name, description, url };
+
+    const project = await projectController.put(data);
+
+    return res.status(201).json({ data: project, error: null });
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `msg: ${e.message}`;
+
+      // TODO: replace with logger
+      console.error(`project.route.put, ${args}`);
+    }
 
     // TODO: create a custom error handler
     return res.status(500).json({ data: null, error: 'Internal Server Error' });
@@ -61,5 +100,7 @@ router.get('/project', getAll);
 router.get('/project/:id', validator(projectValidations.getOne), getOne);
 
 router.post('/project', validator(projectValidations.post), post);
+
+router.put('/project/:id', validator(projectValidations.put), put);
 
 export default router;

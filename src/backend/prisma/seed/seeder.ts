@@ -1,13 +1,25 @@
 import { PrismaClient } from '@prisma/client';
 
-import { projects } from './mock';
+type ProjectSeed = {
+  id?: string;
+  name: string;
+  description: string;
+  url: string;
+  lastMaintenance?: Date;
+  nextMaintenance?: Date;
+  maintenance: {
+    create: {
+      hours: number;
+    };
+  };
+};
 
-const seeder = async () => {
+export const seeder = async (seedData: ProjectSeed[]) => {
   const prisma = new PrismaClient();
 
   try {
-    for (let project of projects) {
-      await prisma.project.create({ data: project });
+    for (let data of seedData) {
+      await prisma.project.create({ data });
     }
 
     await prisma.$disconnect();
@@ -19,5 +31,3 @@ const seeder = async () => {
     process.exit(1);
   }
 };
-
-seeder();

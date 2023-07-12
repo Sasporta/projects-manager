@@ -39,6 +39,6 @@
     "schema": "src/backend/prisma/schema.prisma",
     "generate": "src/generated/client",
     "migration": "src/backend/prisma/migrations",
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} src/backend/prisma/seed/seeder.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} src/backend/prisma/seed"
   }
 }
