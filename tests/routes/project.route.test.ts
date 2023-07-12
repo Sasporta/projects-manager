@@ -15,19 +15,17 @@ describe('/api/projects', () => {
     await post(req, res);
 
     expect(res._getStatusCode()).toBe(201);
-    expect(JSON.parse(res._getData())).toEqual(
-      {
-        data: {
-          id: expect.any(String),
-          name: 'test-name',
-          description: 'test-description',
-          url: 'test-url',
-          lastMaintenance: null,
-          nextMaintenance: expect.any(String),
-          createdAt: expect.any(String),
-        },
-        error: null,
+    expect(JSON.parse(res._getData())).toEqual({
+      data: {
+        id: expect.any(String),
+        name: 'test-name',
+        description: 'test-description',
+        url: 'test-url',
+        lastMaintenance: null,
+        nextMaintenance: expect.any(String),
+        createdAt: expect.any(String),
       },
-    );
+      error: null,
+    });
   });
 });
