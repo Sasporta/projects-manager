@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 
 import validator from '../middleware/validator';
 import { getOneValidation } from '../validations/project.validation';
@@ -6,7 +7,8 @@ import * as projectController from '../controllers/project.controller';
 
 const router = express.Router();
 
-router.get('/project', async (req, res) => {
+// TODO: delete if not needed
+export const getAll = async (req: Request, res: Response) => {
   try {
     const projects = await projectController.getAll();
 
@@ -17,9 +19,10 @@ router.get('/project', async (req, res) => {
     // TODO: create a custom error handler
     return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
-});
+};
 
-router.get('/project/:id', validator(getOneValidation), async (req, res) => {
+// TODO: delete if not needed
+export const getOne = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -34,6 +37,10 @@ router.get('/project/:id', validator(getOneValidation), async (req, res) => {
     // TODO: create a custom error handler
     return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
-});
+};
+
+router.get('/project', getAll);
+
+router.get('/project/:id', validator(getOneValidation), getOne);
 
 export default router;

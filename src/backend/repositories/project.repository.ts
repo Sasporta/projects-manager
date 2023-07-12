@@ -13,6 +13,7 @@ export const getAll = async () => {
       },
     };
 
+    // TODO: Add pagination and limit
     const projects = await prisma.project.findMany(findManyArgs);
 
     return projects;
