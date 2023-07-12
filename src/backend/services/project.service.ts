@@ -67,7 +67,7 @@ export const update = async (data: UpdateData) => {
     if (e instanceof Error) {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
-      throw new Error(`project.service.create, ${args}`);
+      throw new Error(`project.service.update, ${args}`);
     }
   }
 };
