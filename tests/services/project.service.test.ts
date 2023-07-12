@@ -4,7 +4,7 @@ import * as projectRepository from '@/backend/repositories/project.repository';
 describe('project.service', () => {
   describe('getAll', () => {
     it('should return all projects', async () => {
-      const projects = await projectService.getAll();
+      const projects = await projectService.readAll();
 
       expect(projects).toEqual([
         {
@@ -29,12 +29,12 @@ describe('project.service', () => {
     });
 
     it('should throw an error', async () => {
-      jest.spyOn(projectRepository, 'getAll').mockImplementation(() => {
-        throw new Error('getAll failed');
+      jest.spyOn(projectRepository, 'readAll').mockImplementation(() => {
+        throw new Error('readAll failed');
       });
 
-      expect(projectService.getAll()).rejects.toThrow(
-        'project.service.getAll, msg: getAll failed',
+      expect(projectService.readAll()).rejects.toThrow(
+        'project.service.readAll, msg: readAll failed',
       );
     });
   });

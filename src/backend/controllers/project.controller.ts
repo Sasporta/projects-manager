@@ -1,10 +1,13 @@
+import * as scheduler from '../services/scheduler.service';
 import * as projectService from '../services/project.service';
 
-type Data = { id: string };
+type GetOneData = { id: string };
+
+type PostData = { name: string; description: string; url: string };
 
 export const getAll = async () => {
   try {
-    const projects = await projectService.getAll();
+    const projects = await projectService.readAll();
 
     return projects;
   } catch (e) {
@@ -16,9 +19,9 @@ export const getAll = async () => {
   }
 };
 
-export const getOne = async (data: Data) => {
+export const getOne = async (data: GetOneData) => {
   try {
-    const project = await projectService.getOne(data);
+    const project = await projectService.readOne(data);
 
     return project;
   } catch (e) {
@@ -26,6 +29,24 @@ export const getOne = async (data: Data) => {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
       throw new Error(`project.controller.getOne, ${args}`);
+    }
+  }
+};
+
+export const post = async (data: PostData) => {
+  try {
+    const nextMaintenance = scheduler.scheduleNextMaintenance();
+
+    const createData = { ...data, nextMaintenance };
+
+    const project = await projectService.create(createData);
+
+    return project;
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+      throw new Error(`project.controller.post, ${args}`);
     }
   }
 };

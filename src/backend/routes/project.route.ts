@@ -2,8 +2,8 @@ import express from 'express';
 import { Request, Response } from 'express';
 
 import validator from '../middleware/validator';
-import { getOneValidation } from '../validations/project.validation';
 import * as projectController from '../controllers/project.controller';
+import * as projectValidations from '../validations/project.validation';
 
 const router = express.Router();
 
@@ -39,8 +39,27 @@ export const getOne = async (req: Request, res: Response) => {
   }
 };
 
+export const post = async (req: Request, res: Response) => {
+  try {
+    const { name, description, url } = req.body;
+
+    const data = { name, description, url };
+
+    const project = await projectController.post(data);
+
+    return res.status(201).json({ data: project, error: null });
+  } catch (e) {
+    // TODO: log error
+
+    // TODO: create a custom error handler
+    return res.status(500).json({ data: null, error: 'Internal Server Error' });
+  }
+};
+
 router.get('/project', getAll);
 
-router.get('/project/:id', validator(getOneValidation), getOne);
+router.get('/project/:id', validator(projectValidations.getOne), getOne);
+
+router.post('/project', validator(projectValidations.post), post);
 
 export default router;
