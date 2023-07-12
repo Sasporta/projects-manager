@@ -1,14 +1,18 @@
+import next from 'next';
 import express from 'express';
 
-import app from './app';
 import config from './backend/config';
 import routes from './backend/routes';
 
 const init = async () => {
   try {
-    const server = express();
+    const dev = process.env.NODE_ENV !== 'production';
+
+    const app = next({ dev, dir: './src/frontend' });
 
     const handle = app.getRequestHandler();
+
+    const server = express();
 
     const {
       env: { port },
