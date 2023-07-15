@@ -14,7 +14,7 @@ type ProjectSeed = {
   };
 };
 
-export const seeder = async (seedData: ProjectSeed[]) => {
+const seeder = async (seedData: ProjectSeed[]) => {
   const prisma = new PrismaClient();
 
   try {
@@ -31,3 +31,5 @@ export const seeder = async (seedData: ProjectSeed[]) => {
     process.exit(1);
   }
 };
+
+export default seeder;

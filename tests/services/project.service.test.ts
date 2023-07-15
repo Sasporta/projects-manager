@@ -1,7 +1,7 @@
-import { prisma } from '@/backend/lib/prisma';
-import { seeder } from '@/backend/prisma/seed/seeder';
-import * as projectService from '@/backend/services/project.service';
-import * as projectRepository from '@/backend/repositories/project.repository';
+import seeder from '@seed/seeder';
+import { prisma } from '@lib/prisma';
+import * as projectService from '@services/project.service';
+import * as projectRepository from '@repositories/project.repository';
 
 describe('project.service', () => {
   describe('getAll', () => {
@@ -51,20 +51,29 @@ describe('project.service', () => {
         {
           id: expect.any(String),
           name: 'getAll-test-name1',
+          description: 'getAll-test-description1',
           url: 'getAll-test-url1',
+          lastMaintenance: null,
           nextMaintenance: null,
+          createdAt: expect.any(Date),
         },
         {
           id: expect.any(String),
           name: 'getAll-test-name2',
+          description: 'getAll-test-description2',
           url: 'getAll-test-url2',
+          lastMaintenance: null,
           nextMaintenance: null,
+          createdAt: expect.any(Date),
         },
         {
           id: expect.any(String),
           name: 'getAll-test-name3',
+          description: 'getAll-test-description3',
           url: 'getAll-test-url3',
+          lastMaintenance: null,
           nextMaintenance: null,
+          createdAt: expect.any(Date),
         },
       ]);
     });

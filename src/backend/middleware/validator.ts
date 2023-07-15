@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 
-import getReqData from '../utils/getReqData';
+import getReqData from '@utils/getReqData';
 
 const validator = (schema: Joi.Schema) => {
   return (req: Request, res: Response, next: NextFunction) => {
