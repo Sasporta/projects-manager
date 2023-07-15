@@ -32,7 +32,8 @@
       "@routes/*": ["./src/backend/routes/*"],
       "@services/*": ["./src/backend/services/*"],
       "@utils/*": ["./src/backend/utils/*"],
-      "@validations/*": ["./src/backend/validations/*"]
+      "@validations/*": ["./src/backend/validations/*"],
+      "@common/*": ["./src/common/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

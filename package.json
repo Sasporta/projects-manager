@@ -8,6 +8,7 @@
     "start": "NODE_ENV=production node dir/server.js",
     "lint": "eslint .",
     "test": "bash src/scripts/test.sh",
+    "test:no-db": "jest",
     "test:coverage": "bash src/scripts/test.sh '--coverage-reporters=html'"
   },
   "dependencies": {

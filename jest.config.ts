@@ -6,7 +6,6 @@ import { compilerOptions } from './tsconfig.json';
 const jestConfig: JestConfigWithTsJest = {
   clearMocks: true,
   preset: 'ts-jest',
-  collectCoverage: true,
   testEnvironment: 'node',
   coverageReporters: ['text-summary'],
   collectCoverageFrom: ['src/backend/**'],

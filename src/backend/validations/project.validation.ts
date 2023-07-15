@@ -1,32 +1,34 @@
 import Joi from 'joi';
 
+import * as validations from '@common/common.validations';
+
 export const getOne = Joi.object({
   params: Joi.object({
-    id: Joi.string().uuid().required(),
+    id: validations.uuid,
   }),
 });
 
 export const post = Joi.object({
   body: Joi.object({
-    name: Joi.string().alphanum().min(1).max(30).required(),
-    description: Joi.string().alphanum().min(1).max(100).required(),
-    url: Joi.string().uri().min(1).max(50).required(),
+    name: validations.name,
+    description: validations.description,
+    url: validations.url,
   }),
 });
 
 export const put = Joi.object({
   params: Joi.object({
-    id: Joi.string().uuid().required(),
+    id: validations.uuid,
   }),
   body: Joi.object({
-    name: Joi.string().alphanum().min(1).max(30).required(),
-    description: Joi.string().alphanum().min(1).max(100).required(),
-    url: Joi.string().uri().min(1).max(50).required(),
+    name: validations.name,
+    description: validations.description,
+    url: validations.url,
   }),
 });
 
 export const remove = Joi.object({
   params: Joi.object({
-    id: Joi.string().uuid().required(),
+    id: validations.uuid,
   }),
 });
