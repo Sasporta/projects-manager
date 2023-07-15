@@ -1,4 +1,4 @@
-import * as projectRepository from '../repositories/project.repository';
+import * as projectRepository from '@repositories/project.repository';
 
 type ReadOneData = { id: string };
 
@@ -15,6 +15,8 @@ type UpdateData = {
   description: string;
   url: string;
 };
+
+type DestroyData = { id: string };
 
 export const readAll = async () => {
   try {
@@ -68,6 +70,20 @@ export const update = async (data: UpdateData) => {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
       throw new Error(`project.service.update, ${args}`);
+    }
+  }
+};
+
+export const destroy = async (data: DestroyData) => {
+  try {
+    const project = await projectRepository.destroy(data);
+
+    return project;
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+      throw new Error(`project.service.destroy, ${args}`);
     }
   }
 };

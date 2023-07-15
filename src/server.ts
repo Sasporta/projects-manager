@@ -1,8 +1,8 @@
 import next from 'next';
 import express from 'express';
 
-import config from './backend/config';
-import routes from './backend/routes';
+import config from '@config';
+import routes from '@routes';
 
 const init = async () => {
   try {

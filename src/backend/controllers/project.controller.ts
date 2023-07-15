@@ -1,11 +1,13 @@
-import * as scheduler from '../services/scheduler.service';
-import * as projectService from '../services/project.service';
+import * as scheduler from '@services/scheduler.service';
+import * as projectService from '@services/project.service';
 
 type GetOneData = { id: string };
 
 type PostData = { name: string; description: string; url: string };
 
 type PutData = { id: string, name: string; description: string; url: string };
+
+type RemoveData = { id: string };
 
 export const getAll = async () => {
   try {
@@ -63,6 +65,20 @@ export const put = async (data: PutData) => {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
       throw new Error(`project.controller.put, ${args}`);
+    }
+  }
+};
+
+export const remove = async (data: RemoveData) => {
+  try {
+    const project = await projectService.destroy(data);
+
+    return project;
+  } catch (e) {
+    if (e instanceof Error) {
+      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+      throw new Error(`project.controller.remove, ${args}`);
     }
   }
 };

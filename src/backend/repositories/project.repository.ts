@@ -1,4 +1,6 @@
-import { prisma } from '../lib/prisma';
+import { Prisma } from '@prisma/client';
+
+import { prisma } from '@lib/prisma';
 
 type ReadOneData = { id: string };
 
@@ -16,14 +18,19 @@ type UpdateData = {
   url: string;
 };
 
+type DestroyData = { id: string };
+
 export const readAll = async () => {
   try {
     const findManyArgs = {
       select: {
         id: true,
         name: true,
+        description: true,
         url: true,
+        lastMaintenance: true,
         nextMaintenance: true,
+        createdAt: true,
       },
     };
 
@@ -61,7 +68,15 @@ export const readOne = async (data: ReadOneData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === 'P2025') {
+        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+        console.log(`project.repository.destroy, ${args}`);
+
+        return null;
+      }
+    } else if (e instanceof Error) {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
       throw new Error(`project.repository.readOne, ${args}`);
@@ -129,10 +144,46 @@ export const update = async (data: UpdateData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === 'P2025') {
+        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+        console.log(`project.repository.destroy, ${args}`);
+
+        return null;
+      }
+    } else if (e instanceof Error) {
       const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
       throw new Error(`project.repository.update, ${args}`);
+    }
+  }
+};
+
+export const destroy = async (data: DestroyData) => {
+  try {
+    const { id } = data;
+
+    const deleteData = {
+      where: { id },
+    };
+
+    const project = await prisma.project.delete(deleteData);
+
+    return project;
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === 'P2025') {
+        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+        console.log(`project.repository.destroy, ${args}`);
+
+        return null;
+      }
+    } else if (e instanceof Error) {
+      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+
+      throw new Error(`project.repository.destroy, ${args}`);
     }
   }
 };

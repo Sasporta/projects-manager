@@ -24,3 +24,9 @@ export const put = Joi.object({
     url: Joi.string().uri().min(1).max(50).required(),
   }),
 });
+
+export const remove = Joi.object({
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+});
