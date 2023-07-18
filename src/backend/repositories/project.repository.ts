@@ -68,18 +68,20 @@ export const readOne = async (data: ReadOneData) => {
 
     return project;
   } catch (e) {
+    const params = `data: ${JSON.stringify(data, null, 2)}`;
+
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
-        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+        const msg = `msg: ${e.message}`;
 
-        console.log(`project.repository.destroy, ${args}`);
+        console.log(`project.repository.readOne,\n${params},\n${msg}`);
 
         return null;
       }
     } else if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+      const msg = `msg: ${e.stack}`;
 
-      throw new Error(`project.repository.readOne, ${args}`);
+      throw new Error(`project.repository.readOne,\n${params},\n${msg},\n`);
     }
   }
 };
@@ -148,7 +150,7 @@ export const update = async (data: UpdateData) => {
       if (e.code === 'P2025') {
         const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
 
-        console.log(`project.repository.destroy, ${args}`);
+        console.log(`project.repository.update, ${args}`);
 
         return null;
       }

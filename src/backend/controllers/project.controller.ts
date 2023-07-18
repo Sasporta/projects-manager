@@ -29,10 +29,12 @@ export const getOne = async (data: GetOneData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+    const params = `data: ${JSON.stringify(data, null, 2)}`;
 
-      throw new Error(`project.controller.getOne, ${args}`);
+    if (e instanceof Error) {
+      const msg = `msg: ${e.stack}`;
+
+      throw new Error(`project.controller.getOne,\n${params},\n${msg},\n`);
     }
   }
 };

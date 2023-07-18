@@ -32,9 +32,12 @@ const init = async () => {
       }
     });
   } catch (e) {
-    const err = JSON.stringify(e, null, 2);
+    if (e instanceof Error) {
+      const args = `e.stack: ${e.stack}`;
 
-    console.error('Error during Projects Manager initialization ', err);
+      // TODO: replace with logger
+      console.error(`Error during Projects Manager initialization ', ${args}`);
+    }
 
     process.exit(1);
   }
