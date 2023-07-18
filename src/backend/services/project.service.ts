@@ -38,10 +38,12 @@ export const readOne = async (data: ReadOneData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
+    const params = `data: ${JSON.stringify(data, null, 2)}`;
 
-      throw new Error(`project.service.readOne, ${args}`);
+    if (e instanceof Error) {
+      const msg = `msg: ${e.stack}`;
+
+      throw new Error(`project.service.readOne,\n${params},\n${msg},\n`);
     }
   }
 };

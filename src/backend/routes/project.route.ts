@@ -14,7 +14,7 @@ export const getAll = async (req: Request, res: Response) => {
     return res.json({ data: projects, error: null });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
+      const args = `e.stack: ${e.stack}`;
 
       // TODO: replace with logger
       console.error(`project.route.getAll, ${args}`);
@@ -40,10 +40,10 @@ export const getOne = async (req: Request, res: Response) => {
     return res.json({ data: project, error: null });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
+      const stack = `e.stack:\n${e.stack}`;
 
       // TODO: replace with logger
-      console.error(`project.route.getOne, ${args}`);
+      console.error(`project.route.getOne, ${stack},\n`);
     }
 
     // TODO: create a custom error handler
@@ -62,7 +62,7 @@ export const post = async (req: Request, res: Response) => {
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
+      const args = `e.stack: ${e.stack}`;
 
       // TODO: replace with logger
       console.error(`project.route.post, ${args}`);
@@ -90,7 +90,7 @@ export const put = async (req: Request, res: Response) => {
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
+      const args = `e.stack: ${e.stack}`;
 
       // TODO: replace with logger
       console.error(`project.route.put, ${args}`);
@@ -116,7 +116,7 @@ export const remove = async (req: Request, res: Response) => {
     return res.status(204).json({ data: null, error: null });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
+      const args = `e.stack: ${e.stack}`;
 
       // TODO: replace with logger
       console.error(`project.route.remove, ${args}`);
