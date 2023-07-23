@@ -3,6 +3,7 @@ import { createMocks } from 'node-mocks-http';
 
 import seeder from '@seed/seeder';
 import { prisma } from '@lib/prisma';
+import { GeneralError, NotFoundError } from '@lib/customErrors';
 import * as projectController from '@controllers/project.controller';
 import { getAll, getOne, post, put, remove } from '@routes/project.route';
 
@@ -47,12 +48,14 @@ describe('project.route', () => {
       await prisma.project.deleteMany({});
     });
 
-    it('should return all projects with status code 200', async () => {
+    it('should return response with status code 200 and all projects', async () => {
       const { req, res } = createMocks({
         method: 'GET',
       });
 
-      await getAll(req, res);
+      const mockNext = jest.fn();
+
+      await getAll(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(200);
       expect(JSON.parse(res._getData())).toEqual({
@@ -89,22 +92,22 @@ describe('project.route', () => {
       });
     });
 
-    it('should return an error with status code 500', async () => {
+    it('should call next function with GeneralError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'GET',
       });
+
+      const mockNext = jest.fn();
 
       jest.spyOn(projectController, 'getAll').mockImplementation(() => {
         throw new Error('getAll failed');
       });
 
-      await getAll(req, res);
+      await getAll(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(500);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Internal Server Error',
-      });
+      expect(mockNext).toHaveBeenCalledWith(
+        new GeneralError({ cause: new Error('getAll failed') }),
+      );
     });
   });
 
@@ -131,13 +134,15 @@ describe('project.route', () => {
       await prisma.project.deleteMany({});
     });
 
-    it('should return a project with status code 200', async () => {
+    it('should return response with status code 200 and a project', async () => {
       const { req, res } = createMocks({
         method: 'GET',
         params: { id },
       });
 
-      await getOne(req, res);
+      const mockNext = jest.fn();
+
+      await getOne(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(200);
       expect(JSON.parse(res._getData())).toEqual({
@@ -154,38 +159,41 @@ describe('project.route', () => {
       });
     });
 
-    it('should return an error with status code 404', async () => {
+    it('should call next function with NotFoundError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'GET',
         params: { id: '5f531863-3774-4704-af3b-a2f54ec833a5' },
       });
 
-      await getOne(req, res);
+      const mockNext = jest.fn();
 
-      expect(res._getStatusCode()).toBe(404);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Not Found',
-      });
+      await getOne(req, res, mockNext);
+
+      expect(mockNext).toHaveBeenCalledWith(
+        new NotFoundError({
+          message: 'project not found',
+          params: { project: null },
+        }),
+      );
     });
 
-    it('should return an error with status code 500', async () => {
+    it('should call next function with GeneralError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'GET',
         params: { id },
       });
 
+      const mockNext = jest.fn();
+
       jest.spyOn(projectController, 'getOne').mockImplementation(() => {
         throw new Error('getOne failed');
       });
 
-      await getOne(req, res);
+      await getOne(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(500);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Internal Server Error',
-      });
+      expect(mockNext).toHaveBeenCalledWith(
+        new GeneralError({ cause: new Error('getOne failed') }),
+      );
     });
   });
 
@@ -194,7 +202,7 @@ describe('project.route', () => {
       await prisma.project.deleteMany({});
     });
 
-    it('should return the new project with status code 201', async () => {
+    it('should return response with status code 201 and the new project', async () => {
       const { req, res } = createMocks({
         method: 'POST',
         body: {
@@ -204,7 +212,9 @@ describe('project.route', () => {
         },
       });
 
-      await post(req, res);
+      const mockNext = jest.fn();
+
+      await post(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -221,7 +231,7 @@ describe('project.route', () => {
       });
     });
 
-    it('should return an error with status code 500', async () => {
+    it('should call next function with GeneralError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'POST',
         body: {
@@ -231,17 +241,17 @@ describe('project.route', () => {
         },
       });
 
+      const mockNext = jest.fn();
+
       jest.spyOn(projectController, 'post').mockImplementation(() => {
         throw new Error('post failed');
       });
 
-      await post(req, res);
+      await post(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(500);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Internal Server Error',
-      });
+      expect(mockNext).toHaveBeenCalledWith(
+        new GeneralError({ cause: new Error('post failed') }),
+      );
     });
   });
 
@@ -269,7 +279,7 @@ describe('project.route', () => {
       await prisma.project.deleteMany({});
     });
 
-    it('should return the updated project with status code 201', async () => {
+    it('should return response with status code 201 and the updated project ', async () => {
       const { req, res } = createMocks({
         method: 'PUT',
         params: { id },
@@ -280,7 +290,9 @@ describe('project.route', () => {
         },
       });
 
-      await put(req, res);
+      const mockNext = jest.fn();
+
+      await put(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -297,7 +309,7 @@ describe('project.route', () => {
       });
     });
 
-    it('should return an error with status code 404', async () => {
+    it('should call next function with NotFoundError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'PUT',
         params: { id: '5f531863-3774-4704-af3b-a2f54ec833a5' },
@@ -308,16 +320,14 @@ describe('project.route', () => {
         },
       });
 
-      await put(req, res);
+      const mockNext = jest.fn();
 
-      expect(res._getStatusCode()).toBe(404);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Not Found',
-      });
+      await put(req, res, mockNext);
+
+      expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
 
-    it('should return an error with status code 500', async () => {
+    it('should call next function with GeneralError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'PUT',
         params: { id },
@@ -328,17 +338,17 @@ describe('project.route', () => {
         },
       });
 
+      const mockNext = jest.fn();
+
       jest.spyOn(projectController, 'put').mockImplementation(() => {
         throw new Error('put failed');
       });
 
-      await put(req, res);
+      await put(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(500);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Internal Server Error',
-      });
+      expect(mockNext).toHaveBeenCalledWith(
+        new GeneralError({ cause: new Error('put failed') }),
+      );
     });
   });
 
@@ -371,7 +381,9 @@ describe('project.route', () => {
         params: { id },
       });
 
-      await remove(req, res);
+      const mockNext = jest.fn();
+
+      await remove(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(204);
       expect(JSON.parse(res._getData())).toEqual({
@@ -380,38 +392,36 @@ describe('project.route', () => {
       });
     });
 
-    it('should return an error with status code 404', async () => {
+    it('should call next function with NotFoundError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'DELETE',
         params: { id: '5f531863-3774-4704-af3b-a2f54ec833a5' },
       });
 
-      await remove(req, res);
+      const mockNext = jest.fn();
 
-      expect(res._getStatusCode()).toBe(404);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Not Found',
-      });
+      await remove(req, res, mockNext);
+
+      expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
 
-    it('should return an error with status code 500', async () => {
+    it('should call next function with GeneralError when error occur', async () => {
       const { req, res } = createMocks({
         method: 'DELETE',
         params: { id },
       });
 
+      const mockNext = jest.fn();
+
       jest.spyOn(projectController, 'remove').mockImplementation(() => {
         throw new Error('remove failed');
       });
 
-      await remove(req, res);
+      await remove(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(500);
-      expect(JSON.parse(res._getData())).toEqual({
-        data: null,
-        error: 'Internal Server Error',
-      });
+      expect(mockNext).toHaveBeenCalledWith(
+        new GeneralError({ cause: new Error('remove failed') }),
+      );
     });
   });
 });

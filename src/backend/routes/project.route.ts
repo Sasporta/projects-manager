@@ -1,31 +1,27 @@
-import express from 'express';
-import { Request, Response } from 'express';
+import express, { RequestHandler } from 'express';
 
 import validator from '@middleware/validator';
 import * as projectController from '@controllers/project.controller';
 import * as projectValidations from '@validations/project.validation';
+import { ExtendedError, GeneralError, NotFoundError } from '@lib/customErrors';
 
 const router = express.Router();
 
-export const getAll = async (req: Request, res: Response) => {
+export const getAll: RequestHandler = async (req, res, next) => {
   try {
     const projects = await projectController.getAll();
 
     return res.json({ data: projects, error: null });
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `e.stack: ${e.stack}`;
-
-      // TODO: replace with logger
-      console.error(`project.route.getAll, ${args}`);
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
     }
-
-    // TODO: create a custom error handler
-    return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
 };
 
-export const getOne = async (req: Request, res: Response) => {
+export const getOne: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -34,24 +30,23 @@ export const getOne = async (req: Request, res: Response) => {
     const project = await projectController.getOne(data);
 
     if (!project) {
-      return res.status(404).json({ data: null, error: 'Not Found' });
+      throw new NotFoundError({
+        message: 'project not found',
+        params: { project },
+      });
     }
 
     return res.json({ data: project, error: null });
   } catch (e) {
-    if (e instanceof Error) {
-      const stack = `e.stack:\n${e.stack}`;
-
-      // TODO: replace with logger
-      console.error(`project.route.getOne, ${stack},\n`);
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
     }
-
-    // TODO: create a custom error handler
-    return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
 };
 
-export const post = async (req: Request, res: Response) => {
+export const post: RequestHandler = async (req, res, next) => {
   try {
     const { name, description, url } = req.body;
 
@@ -61,19 +56,15 @@ export const post = async (req: Request, res: Response) => {
 
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `e.stack: ${e.stack}`;
-
-      // TODO: replace with logger
-      console.error(`project.route.post, ${args}`);
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
     }
-
-    // TODO: create a custom error handler
-    return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
 };
 
-export const put = async (req: Request, res: Response) => {
+export const put: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -84,24 +75,23 @@ export const put = async (req: Request, res: Response) => {
     const project = await projectController.put(data);
 
     if (!project) {
-      return res.status(404).json({ data: null, error: 'Not Found' });
+      throw new NotFoundError({
+        message: 'project not found',
+        params: { project },
+      });
     }
 
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `e.stack: ${e.stack}`;
-
-      // TODO: replace with logger
-      console.error(`project.route.put, ${args}`);
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
     }
-
-    // TODO: create a custom error handler
-    return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
 };
 
-export const remove = async (req: Request, res: Response) => {
+export const remove: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -110,20 +100,19 @@ export const remove = async (req: Request, res: Response) => {
     const project = await projectController.remove(data);
 
     if (!project) {
-      return res.status(404).json({ data: null, error: 'Not Found' });
+      throw new NotFoundError({
+        message: 'project not found',
+        params: { project },
+      });
     }
 
     return res.status(204).json({ data: null, error: null });
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `e.stack: ${e.stack}`;
-
-      // TODO: replace with logger
-      console.error(`project.route.remove, ${args}`);
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
     }
-
-    // TODO: create a custom error handler
-    return res.status(500).json({ data: null, error: 'Internal Server Error' });
   }
 };
 

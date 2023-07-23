@@ -3,6 +3,7 @@ import express from 'express';
 
 import config from '@config';
 import routes from '@routes';
+import errorHandler from '@middleware/errorHandler';
 
 const init = async () => {
   try {
@@ -20,7 +21,11 @@ const init = async () => {
 
     await app.prepare();
 
+    server.use(express.json());
+
     server.use(routes);
+
+    server.use(errorHandler);
 
     server.all('*', (req, res) => handle(req, res));
 
@@ -33,10 +38,10 @@ const init = async () => {
     });
   } catch (e) {
     if (e instanceof Error) {
-      const args = `e.stack: ${e.stack}`;
-
       // TODO: replace with logger
-      console.error(`Error during Projects Manager initialization ', ${args}`);
+      console.error(
+        `Error during Projects Manager initialization, e.stack: ${e.stack}`,
+      );
     }
 
     process.exit(1);

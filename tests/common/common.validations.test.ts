@@ -89,7 +89,7 @@ describe('common.validations', () => {
 
   describe('validations.name', () => {
     it('should be valid', async () => {
-      const data = 'josh';
+      const data = 'test-test';
 
       const { error } = validations.name.validate(data);
 
@@ -110,7 +110,7 @@ describe('common.validations', () => {
       const { error } = validations.name.validate(data);
 
       expect(error?.message).toBe(
-        '"value" must only contain alpha-numeric characters',
+        '"value" with value "test test" fails to match the required pattern: /^[a-zA-Z-]*$/',
       );
     });
 

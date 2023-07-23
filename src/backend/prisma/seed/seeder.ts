@@ -18,7 +18,7 @@ const seeder = async (seedData: ProjectSeed[]) => {
   const prisma = new PrismaClient();
 
   try {
-    for (let data of seedData) {
+    for (const data of seedData) {
       await prisma.project.create({ data });
     }
 

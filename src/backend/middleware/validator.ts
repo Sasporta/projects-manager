@@ -1,43 +1,37 @@
 import Joi from 'joi';
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
 import getReqData from '@utils/getReqData';
+import {
+  ExtendedError,
+  GeneralError,
+  ValidationError,
+} from '@lib/customErrors';
 
-const validator = (schema: Joi.Schema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const reqData = getReqData(req);
+type Validator = (schema: Joi.Schema) => RequestHandler;
 
-      const { error } = schema.validate(reqData);
+const validator: Validator = schema => (req, res, next) => {
+  try {
+    const reqData = getReqData(req);
 
-      if (error) {
-        const { details } = error;
+    const { error } = schema.validate(reqData);
 
-        const message = details.map(err => err.message).join(',');
+    if (error) {
+      const { details } = error;
 
-        // TODO: implement logger
-        console.log('error', message);
+      const message = details.map(err => err.message).join(',');
 
-        return res
-          .status(422)
-          .json({ data: null, error: 'Unprocessable Entity' });
-      }
-
-      next();
-    } catch (e) {
-      if (e instanceof Error) {
-        const args = `e.stack: ${e.stack}`;
-
-        // TODO: replace with logger
-        console.error(`validator, ${args}`);
-      }
-
-      // TODO: create a custom error handler
-      return res
-        .status(500)
-        .json({ data: null, error: 'Internal Server Error' });
+      throw new ValidationError({ message });
     }
-  };
+
+    next();
+  } catch (e) {
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
+    }
+  }
 };
 
 export default validator;
