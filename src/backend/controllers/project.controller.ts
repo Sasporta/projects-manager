@@ -1,11 +1,12 @@
 import * as scheduler from '@services/scheduler.service';
 import * as projectService from '@services/project.service';
+import { ExtendedError, GeneralError } from '@lib/customErrors';
 
 type GetOneData = { id: string };
 
 type PostData = { name: string; description: string; url: string };
 
-type PutData = { id: string, name: string; description: string; url: string };
+type PutData = { id: string; name: string; description: string; url: string };
 
 type RemoveData = { id: string };
 
@@ -15,10 +16,10 @@ export const getAll = async () => {
 
     return projects;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
-
-      throw new Error(`project.controller.getAll, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ cause: e });
     }
   }
 };
@@ -29,12 +30,10 @@ export const getOne = async (data: GetOneData) => {
 
     return project;
   } catch (e) {
-    const params = `data: ${JSON.stringify(data, null, 2)}`;
-
-    if (e instanceof Error) {
-      const msg = `msg: ${e.stack}`;
-
-      throw new Error(`project.controller.getOne,\n${params},\n${msg},\n`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -49,10 +48,10 @@ export const post = async (data: PostData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.controller.post, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -63,10 +62,10 @@ export const put = async (data: PutData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.controller.put, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -77,10 +76,10 @@ export const remove = async (data: RemoveData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.controller.remove, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };

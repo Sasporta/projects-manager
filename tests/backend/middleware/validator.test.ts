@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { NextFunction } from 'express';
 import { createMocks } from 'node-mocks-http';
 
 import validator from '@middleware/validator';
+import { GeneralError, ValidationError } from '@lib/customErrors';
 import * as projectValidations from '@validations/project.validation';
 
 describe('validator', () => {
@@ -12,46 +12,43 @@ describe('validator', () => {
       params: { id: randomUUID() },
     });
 
-    const mockNext = jest.fn() as NextFunction;
+    const mockNext = jest.fn();
 
     validator(projectValidations.getOne)(req, res, mockNext);
 
     expect(mockNext).toHaveBeenCalledTimes(1);
   });
 
-  it('should return an error with status code 422 when validation invalid', () => {
+  it('should call next function with ValidationError when validation invalid', () => {
     const { req, res } = createMocks({
       method: 'GET',
       params: { id: 'invalid-uuid' },
     });
 
-    const mockNext = jest.fn() as NextFunction;
+    const mockNext = jest.fn();
 
     validator(projectValidations.getOne)(req, res, mockNext);
 
-    expect(res._getStatusCode()).toBe(422);
-    expect(JSON.parse(res._getData())).toEqual({
-      data: null,
-      error: 'Unprocessable Entity',
-    });
+    expect(mockNext).toHaveBeenCalledWith(
+      new ValidationError({ message: '"params.id" must be a valid GUID' }),
+    );
   });
 
-  it('should return an error with status code 500', () => {
+  it('should call next function with GeneralError when error occur', () => {
     const { req, res } = createMocks({
       method: 'GET',
       params: { id: randomUUID() },
     });
 
-    const mockNext = jest.fn().mockImplementation(() => {
+    const mockNext = jest.fn().mockImplementationOnce(() => {
       throw new Error('something failed');
     });
 
     validator(projectValidations.getOne)(req, res, mockNext);
 
-    expect(res._getStatusCode()).toBe(500);
-    expect(JSON.parse(res._getData())).toEqual({
-      data: null,
-      error: 'Internal Server Error',
-    });
+    expect(mockNext).toHaveBeenNthCalledWith(
+      2,
+      new GeneralError({ cause: new Error('something failed') }),
+    );
   });
 });

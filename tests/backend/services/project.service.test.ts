@@ -1,5 +1,6 @@
 import seeder from '@seed/seeder';
 import { prisma } from '@lib/prisma';
+import { GeneralError } from '@lib/customErrors';
 import * as projectService from '@services/project.service';
 import * as projectRepository from '@repositories/project.repository';
 
@@ -78,14 +79,12 @@ describe('project.service', () => {
       ]);
     });
 
-    it('should throw an error', async () => {
+    it('should throw a GeneralError', async () => {
       jest.spyOn(projectRepository, 'readAll').mockImplementation(() => {
         throw new Error('readAll failed');
       });
 
-      expect(projectService.readAll()).rejects.toThrow(
-        'project.service.readAll, msg: readAll failed',
-      );
+      expect(projectService.readAll()).rejects.toThrow(GeneralError);
     });
   });
 });

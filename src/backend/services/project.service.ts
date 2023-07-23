@@ -1,3 +1,4 @@
+import { ExtendedError, GeneralError } from '@lib/customErrors';
 import * as projectRepository from '@repositories/project.repository';
 
 type ReadOneData = { id: string };
@@ -24,10 +25,10 @@ export const readAll = async () => {
 
     return projects;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
-
-      throw new Error(`project.service.readAll, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ cause: e });
     }
   }
 };
@@ -38,12 +39,10 @@ export const readOne = async (data: ReadOneData) => {
 
     return project;
   } catch (e) {
-    const params = `data: ${JSON.stringify(data, null, 2)}`;
-
-    if (e instanceof Error) {
-      const msg = `msg: ${e.stack}`;
-
-      throw new Error(`project.service.readOne,\n${params},\n${msg},\n`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -54,10 +53,10 @@ export const create = async (data: CreateData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.service.create, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -68,10 +67,10 @@ export const update = async (data: UpdateData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.service.update, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -82,10 +81,10 @@ export const destroy = async (data: DestroyData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.service.destroy, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };

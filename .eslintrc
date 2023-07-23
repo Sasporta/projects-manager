@@ -1,5 +1,11 @@
 {
-  "extends": "next/core-web-vitals",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier" // "prettier" must be last. This will turn off eslint rules conflicting with prettier.
+  ],
   "rules": {
     "indent": ["error", 2],
     "semi": ["error", "always"],

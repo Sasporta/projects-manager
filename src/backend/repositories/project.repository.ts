@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@lib/prisma';
+import { ExtendedError, GeneralError, NotFoundError } from '@lib/customErrors';
 
 type ReadOneData = { id: string };
 
@@ -39,10 +40,10 @@ export const readAll = async () => {
 
     return projects;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `msg: ${e.message}`;
-
-      throw new Error(`project.repository.readAll, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ cause: e });
     }
   }
 };
@@ -68,20 +69,10 @@ export const readOne = async (data: ReadOneData) => {
 
     return project;
   } catch (e) {
-    const params = `data: ${JSON.stringify(data, null, 2)}`;
-
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === 'P2025') {
-        const msg = `msg: ${e.message}`;
-
-        console.log(`project.repository.readOne,\n${params},\n${msg}`);
-
-        return null;
-      }
+    if (e instanceof ExtendedError) {
+      throw e;
     } else if (e instanceof Error) {
-      const msg = `msg: ${e.stack}`;
-
-      throw new Error(`project.repository.readOne,\n${params},\n${msg},\n`);
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -112,10 +103,10 @@ export const create = async (data: CreateData) => {
 
     return project;
   } catch (e) {
-    if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.repository.create, ${args}`);
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -148,16 +139,12 @@ export const update = async (data: UpdateData) => {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
-        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-        console.log(`project.repository.update, ${args}`);
-
-        return null;
+        throw new NotFoundError({ message: e.message, params: data });
       }
+    } else if (e instanceof ExtendedError) {
+      throw e;
     } else if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.repository.update, ${args}`);
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
@@ -176,16 +163,12 @@ export const destroy = async (data: DestroyData) => {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
-        const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-        console.log(`project.repository.destroy, ${args}`);
-
-        return null;
+        throw new NotFoundError({ message: e.message, params: data });
       }
+    } else if (e instanceof ExtendedError) {
+      throw e;
     } else if (e instanceof Error) {
-      const args = `data: ${JSON.stringify(data, null, 2)} msg: ${e.message}`;
-
-      throw new Error(`project.repository.destroy, ${args}`);
+      throw new GeneralError({ params: data, cause: e });
     }
   }
 };
