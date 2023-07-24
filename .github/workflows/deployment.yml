@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
 
     env:
       POSTGRES_DB: ${{ secrets.local.DB_NAME }}
@@ -28,7 +28,6 @@ jobs:
           node-version: 18.x
           cache: 'npm'
 
-      - run: brew install docker docker-compose
       - run: npm ci
       - run:  echo
                 POSTGRES_DB=$POSTGRES_DB'\n'
