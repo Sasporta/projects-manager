@@ -5,30 +5,32 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
+    runs-on: macOS-latest
 
-    runs-on: macos-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    env:
+      POSTGRES_DB: ${{ secrets.local.DB_NAME }}}
+      POSTGRES_PASSWORD: ${{ secrets.local.DB_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.local.DB_USER }}
+      POSTGRES_URL: postgres://${{ secrets.local.DB_USER }}:${{ secrets.local.DB_PASSWORD }}@localhost:5432/${{ secrets.local.DB_NAME }}
+      DATABASE_URL: postgresql://${{ secrets.local.DB_USER }}:${{ secrets.local.DB_PASSWORD }}@localhost:5432/${{ secrets.local.DB_NAME }}}?schema=public
+      DATABASE_LOGS: ${{ vars.local.DB_LOGS }}}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - uses: actions/checkout@v3
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
 
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-  
-    # add deployment
+      - run: brew install docker docker-compose
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+    # TODO: add deployment
