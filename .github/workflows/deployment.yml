@@ -40,7 +40,7 @@ jobs:
       - run: npm run build --if-present
       - run: npm run lint
       - run: docker-compose up -d
-      - run: sleep 2
+      - run: sleep 5
       - run: npx prisma migrate dev
       - run: npx jest --maxWorkers=1 --collectCoverage --silent
 
