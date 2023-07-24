@@ -37,6 +37,7 @@ jobs:
                 DATABASE_URL=$DATABASE_URL'\n'
                 DATABASE_LOGS=$DATABASE_LOGS'\n'
               > .env
+      - run: echo "$(<.env)"
       - run: npm run build --if-present
       - run: npm run lint
       - run: docker-compose up -d
