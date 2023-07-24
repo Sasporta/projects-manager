@@ -39,6 +39,10 @@ jobs:
                 DATABASE_LOGS=$DATABASE_LOGS'\n'
               > .env
       - run: npm run build --if-present
-      - run: npm test
+      - run: npm lint
+      - run: docker-compose up -d
+      - run: sleep 2
+      - run: npx prisma migrate dev
+      - run: npx jest --maxWorkers=1 --collectCoverage --silent
 
     # TODO: add deployment
