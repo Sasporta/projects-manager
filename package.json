@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bash src/scripts/dev.sh",
-    "build": "next build",
+    "dev": "bash scripts/dev.sh",
+    "build": "cd src/frontend && next build",
     "start": "NODE_ENV=production node dir/server.js",
     "lint": "eslint .",
-    "test": "bash src/scripts/test.sh",
+    "test": "bash scripts/test.sh",
     "test:basic": "jest",
-    "test:coverage": "bash src/scripts/test.sh '--coverage-reporters=html'"
+    "test:coverage": "bash scripts/test.sh '--coverage-reporters=html'"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
