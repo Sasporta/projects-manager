@@ -10,7 +10,7 @@ type ExtendedErrorConstructor = {
 type GeneralErrorConstructor = {
   message?: string;
   params?: object;
-  cause: Error;
+  cause?: Error;
 };
 
 type NotFoundErrorConstructor = {

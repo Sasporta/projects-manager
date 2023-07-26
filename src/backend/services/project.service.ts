@@ -7,7 +7,7 @@ type CreateData = {
   name: string;
   description: string;
   url: string;
-  nextMaintenance: Date;
+  scheduledAt: Date;
 };
 
 type UpdateData = {
@@ -51,7 +51,24 @@ export const create = async (data: CreateData) => {
   try {
     const project = await projectRepository.create(data);
 
-    return project;
+    if (!project) {
+      throw new GeneralError({
+        message: `project is ${project}`,
+        params: data,
+      });
+    }
+
+    const formattedProject = {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      url: project.url,
+      createdAt: project.createdAt,
+      lastMaintenance: null,
+      nextMaintenance: project.maintenance[0].scheduledAt,
+    };
+
+    return formattedProject;
   } catch (e) {
     if (e instanceof ExtendedError) {
       throw e;

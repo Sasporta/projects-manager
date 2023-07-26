@@ -8,6 +8,11 @@ import * as projectController from '@controllers/project.controller';
 import { getAll, getOne, post, put, remove } from '@routes/project.route';
 
 describe('project.route', () => {
+  afterEach(async () => {
+    await prisma.maintenance.deleteMany({});
+    await prisma.project.deleteMany({});
+  });
+
   describe('getAll', () => {
     beforeAll(async () => {
       await seeder([
@@ -17,7 +22,7 @@ describe('project.route', () => {
           url: 'getAll-test-url1',
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
@@ -27,7 +32,7 @@ describe('project.route', () => {
           url: 'getAll-test-url2',
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
@@ -37,15 +42,11 @@ describe('project.route', () => {
           url: 'getAll-test-url3',
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
       ]);
-    });
-
-    afterAll(async () => {
-      await prisma.project.deleteMany({});
     });
 
     it('should return response with status code 200 and all projects', async () => {
@@ -123,15 +124,11 @@ describe('project.route', () => {
           url: 'getOne-test-url',
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
       ]);
-    });
-
-    afterAll(async () => {
-      await prisma.project.deleteMany({});
     });
 
     it('should return response with status code 200 and a project', async () => {
@@ -197,11 +194,7 @@ describe('project.route', () => {
     });
   });
 
-  describe('post', () => {
-    afterAll(async () => {
-      await prisma.project.deleteMany({});
-    });
-
+  describe.only('post', () => {
     it('should return response with status code 201 and the new project', async () => {
       const { req, res } = createMocks({
         method: 'POST',
@@ -265,18 +258,13 @@ describe('project.route', () => {
           name: 'pre-put-test-name',
           description: 'pre-put-test-description',
           url: 'pre-put-test-url',
-          nextMaintenance: new Date(),
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
       ]);
-    });
-
-    afterAll(async () => {
-      await prisma.project.deleteMany({});
     });
 
     it('should return response with status code 201 and the updated project ', async () => {
@@ -364,15 +352,11 @@ describe('project.route', () => {
           url: 'delete-test-url',
           maintenance: {
             create: {
-              hours: 3,
+              scheduledAt: new Date(),
             },
           },
         },
       ]);
-    });
-
-    afterAll(async () => {
-      await prisma.project.deleteMany({});
     });
 
     it('should return empty response status code 204', async () => {

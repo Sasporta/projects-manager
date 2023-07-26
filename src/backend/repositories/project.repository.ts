@@ -9,7 +9,7 @@ type CreateData = {
   name: string;
   description: string;
   url: string;
-  nextMaintenance: Date;
+  scheduledAt: Date;
 };
 
 type UpdateData = {
@@ -79,23 +79,30 @@ export const readOne = async (data: ReadOneData) => {
 
 export const create = async (data: CreateData) => {
   try {
-    const { name, description, url, nextMaintenance } = data;
+    const { name, description, url, scheduledAt } = data;
 
     const createData = {
       data: {
         name,
         description,
         url,
-        nextMaintenance,
+        maintenance: {
+          create: {
+            scheduledAt,
+          },
+        },
       },
       select: {
         id: true,
         name: true,
         description: true,
         url: true,
-        lastMaintenance: true,
-        nextMaintenance: true,
         createdAt: true,
+        maintenance: {
+          select: {
+            scheduledAt: true,
+          },
+        },
       },
     };
 
