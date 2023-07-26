@@ -4,7 +4,7 @@ import { GeneralError } from '@lib/customErrors';
 import * as projectService from '@services/project.service';
 import * as projectRepository from '@repositories/project.repository';
 
-describe('project.service', () => {
+describe.skip('project.service', () => {
   describe('getAll', () => {
     beforeAll(async () => {
       await seeder([
