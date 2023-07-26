@@ -113,7 +113,24 @@ export const update = async (data: UpdateData) => {
   try {
     const project = await projectRepository.update(data);
 
-    return project;
+    if (!project) {
+      throw new GeneralError({
+        message: `project is ${project}`,
+        params: data,
+      });
+    }
+
+    const formattedProject = {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      url: project.url,
+      createdAt: project.createdAt,
+      lastMaintenance: project.maintenance?.[1]?.doneAt ?? null,
+      nextMaintenance: project.maintenance[0].scheduledAt,
+    };
+
+    return formattedProject;
   } catch (e) {
     if (e instanceof ExtendedError) {
       throw e;
