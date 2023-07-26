@@ -157,9 +157,17 @@ export const update = async (data: UpdateData) => {
         name: true,
         description: true,
         url: true,
-        lastMaintenance: true,
-        nextMaintenance: true,
         createdAt: true,
+        maintenance: {
+          select: {
+            scheduledAt: true,
+            doneAt: true,
+          },
+          take: 2,
+          orderBy: {
+            scheduledAt: Prisma.SortOrder.desc,
+          },
+        },
       },
     };
 

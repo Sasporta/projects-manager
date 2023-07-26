@@ -1,9 +1,9 @@
 import express, { RequestHandler } from 'express';
 
 import validator from '@middleware/validator';
+import { ExtendedError, GeneralError } from '@lib/customErrors';
 import * as projectController from '@controllers/project.controller';
 import * as projectValidations from '@validations/project.validation';
-import { ExtendedError, GeneralError, NotFoundError } from '@lib/customErrors';
 
 const router = express.Router();
 
@@ -67,13 +67,6 @@ export const put: RequestHandler = async (req, res, next) => {
 
     const project = await projectController.put(data);
 
-    if (!project) {
-      throw new NotFoundError({
-        message: 'project not found',
-        params: { project },
-      });
-    }
-
     return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
@@ -90,14 +83,7 @@ export const remove: RequestHandler = async (req, res, next) => {
 
     const data = { id };
 
-    const project = await projectController.remove(data);
-
-    if (!project) {
-      throw new NotFoundError({
-        message: 'project not found',
-        params: { project },
-      });
-    }
+    await projectController.remove(data);
 
     return res.status(204).json({ data: null, error: null });
   } catch (e) {

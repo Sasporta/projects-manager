@@ -13,7 +13,7 @@ describe('project.route', () => {
     await prisma.project.deleteMany({});
   });
 
-  describe.only('getAll', () => {
+  describe('getAll', () => {
     beforeAll(async () => {
       await seeder([
         {
@@ -112,7 +112,7 @@ describe('project.route', () => {
     });
   });
 
-  describe.only('getOne', () => {
+  describe('getOne', () => {
     const id = randomUUID();
 
     beforeAll(async () => {
@@ -194,7 +194,7 @@ describe('project.route', () => {
     });
   });
 
-  describe.only('post', () => {
+  describe('post', () => {
     it('should return response with status code 201 and the new project', async () => {
       const { req, res } = createMocks({
         method: 'POST',
