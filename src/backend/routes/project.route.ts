@@ -29,13 +29,6 @@ export const getOne: RequestHandler = async (req, res, next) => {
 
     const project = await projectController.getOne(data);
 
-    if (!project) {
-      throw new NotFoundError({
-        message: 'project not found',
-        params: { project },
-      });
-    }
-
     return res.json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {

@@ -29,9 +29,17 @@ export const readAll = async () => {
         name: true,
         description: true,
         url: true,
-        lastMaintenance: true,
-        nextMaintenance: true,
         createdAt: true,
+        maintenance: {
+          select: {
+            scheduledAt: true,
+            doneAt: true,
+          },
+          take: 2,
+          orderBy: {
+            scheduledAt: Prisma.SortOrder.desc,
+          },
+        },
       },
     };
 
@@ -59,13 +67,28 @@ export const readOne = async (data: ReadOneData) => {
         name: true,
         description: true,
         url: true,
-        lastMaintenance: true,
-        nextMaintenance: true,
         createdAt: true,
+        maintenance: {
+          select: {
+            scheduledAt: true,
+            doneAt: true,
+          },
+          take: 2,
+          orderBy: {
+            scheduledAt: Prisma.SortOrder.desc,
+          },
+        },
       },
     };
 
     const project = await prisma.project.findUnique(findUniqueArgs);
+
+    if (!project) {
+      throw new NotFoundError({
+        message: 'project not found',
+        params: { project },
+      });
+    }
 
     return project;
   } catch (e) {

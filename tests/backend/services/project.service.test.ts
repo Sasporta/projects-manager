@@ -4,7 +4,7 @@ import { GeneralError } from '@lib/customErrors';
 import * as projectService from '@services/project.service';
 import * as projectRepository from '@repositories/project.repository';
 
-describe.skip('project.service', () => {
+describe('project.service', () => {
   describe('getAll', () => {
     beforeAll(async () => {
       await seeder([
@@ -55,7 +55,7 @@ describe.skip('project.service', () => {
           description: 'getAll-test-description1',
           url: 'getAll-test-url1',
           lastMaintenance: null,
-          nextMaintenance: null,
+          nextMaintenance: expect.any(Date),
           createdAt: expect.any(Date),
         },
         {
@@ -64,7 +64,7 @@ describe.skip('project.service', () => {
           description: 'getAll-test-description2',
           url: 'getAll-test-url2',
           lastMaintenance: null,
-          nextMaintenance: null,
+          nextMaintenance: expect.any(Date),
           createdAt: expect.any(Date),
         },
         {
@@ -73,7 +73,7 @@ describe.skip('project.service', () => {
           description: 'getAll-test-description3',
           url: 'getAll-test-url3',
           lastMaintenance: null,
-          nextMaintenance: null,
+          nextMaintenance: expect.any(Date),
           createdAt: expect.any(Date),
         },
       ]);

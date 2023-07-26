@@ -23,7 +23,21 @@ export const readAll = async () => {
   try {
     const projects = await projectRepository.readAll();
 
-    return projects;
+    if (!projects) {
+      throw new GeneralError({ message: `project is ${projects}` });
+    }
+
+    const formattedProjects = projects.map(project => ({
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      url: project.url,
+      createdAt: project.createdAt,
+      lastMaintenance: project.maintenance?.[1]?.doneAt ?? null,
+      nextMaintenance: project.maintenance[0].scheduledAt,
+    }));
+
+    return formattedProjects;
   } catch (e) {
     if (e instanceof ExtendedError) {
       throw e;
@@ -37,7 +51,24 @@ export const readOne = async (data: ReadOneData) => {
   try {
     const project = await projectRepository.readOne(data);
 
-    return project;
+    if (!project) {
+      throw new GeneralError({
+        message: `project is ${project}`,
+        params: data,
+      });
+    }
+
+    const formattedProject = {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      url: project.url,
+      createdAt: project.createdAt,
+      lastMaintenance: project.maintenance?.[1]?.doneAt ?? null,
+      nextMaintenance: project.maintenance[0].scheduledAt,
+    };
+
+    return formattedProject;
   } catch (e) {
     if (e instanceof ExtendedError) {
       throw e;
