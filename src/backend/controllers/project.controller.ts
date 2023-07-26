@@ -40,9 +40,9 @@ export const getOne = async (data: GetOneData) => {
 
 export const post = async (data: PostData) => {
   try {
-    const nextMaintenance = scheduler.scheduleNextMaintenance();
+    const scheduledAt = scheduler.scheduleNextMaintenance();
 
-    const createData = { ...data, nextMaintenance };
+    const createData = { ...data, scheduledAt };
 
     const project = await projectService.create(createData);
 

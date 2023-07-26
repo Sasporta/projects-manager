@@ -5,11 +5,9 @@ type ProjectSeed = {
   name: string;
   description: string;
   url: string;
-  lastMaintenance?: Date;
-  nextMaintenance?: Date;
   maintenance: {
     create: {
-      hours: number;
+      scheduledAt: Date;
     };
   };
 };
