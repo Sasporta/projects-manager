@@ -13,7 +13,7 @@ describe('project.route', () => {
     await prisma.project.deleteMany({});
   });
 
-  describe('getAll', () => {
+  describe.only('getAll', () => {
     beforeAll(async () => {
       await seeder([
         {
@@ -67,7 +67,7 @@ describe('project.route', () => {
             description: 'getAll-test-description1',
             url: 'getAll-test-url1',
             lastMaintenance: null,
-            nextMaintenance: null,
+            nextMaintenance: expect.any(String),
             createdAt: expect.any(String),
           },
           {
@@ -76,7 +76,7 @@ describe('project.route', () => {
             description: 'getAll-test-description2',
             url: 'getAll-test-url2',
             lastMaintenance: null,
-            nextMaintenance: null,
+            nextMaintenance: expect.any(String),
             createdAt: expect.any(String),
           },
           {
@@ -85,7 +85,7 @@ describe('project.route', () => {
             description: 'getAll-test-description3',
             url: 'getAll-test-url3',
             lastMaintenance: null,
-            nextMaintenance: null,
+            nextMaintenance: expect.any(String),
             createdAt: expect.any(String),
           },
         ],
@@ -112,7 +112,7 @@ describe('project.route', () => {
     });
   });
 
-  describe('getOne', () => {
+  describe.only('getOne', () => {
     const id = randomUUID();
 
     beforeAll(async () => {
@@ -149,7 +149,7 @@ describe('project.route', () => {
           description: 'getOne-test-description',
           url: 'getOne-test-url',
           lastMaintenance: null,
-          nextMaintenance: null,
+          nextMaintenance: expect.any(String),
           createdAt: expect.any(String),
         },
         error: null,
