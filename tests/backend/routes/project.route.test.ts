@@ -3,9 +3,9 @@ import { createMocks } from 'node-mocks-http';
 
 import seeder from '@seed/seeder';
 import { prisma } from '@lib/prisma';
-import * as projectRoute from '@routes/project.route';
-import { GeneralError, NotFoundError } from '@lib/customErrors';
 import * as projectController from '@controllers/project.controller';
+import { GeneralError, NotFoundError } from '@lib/customErrors';
+import * as projectService from '@services/project.service';
 
 describe('project.route', () => {
   describe('getAll', () => {
@@ -56,7 +56,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.getAll(req, res, mockNext);
+      await projectController.getAll(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(200);
       expect(JSON.parse(res._getData())).toEqual({
@@ -100,14 +100,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'getAll').mockImplementation(() => {
-        throw new Error('getAll failed');
+      jest.spyOn(projectService, 'readAll').mockImplementation(() => {
+        throw new Error('readAll failed');
       });
 
-      await projectRoute.getAll(req, res, mockNext);
+      await projectController.getAll(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('getAll failed') }),
+        new GeneralError({ cause: new Error('readAll failed') }),
       );
     });
   });
@@ -144,7 +144,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.getOne(req, res, mockNext);
+      await projectController.getOne(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(200);
       expect(JSON.parse(res._getData())).toEqual({
@@ -169,7 +169,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.getOne(req, res, mockNext);
+      await projectController.getOne(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
         new NotFoundError({
@@ -187,14 +187,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'getOne').mockImplementation(() => {
-        throw new Error('getOne failed');
+      jest.spyOn(projectService, 'readOne').mockImplementation(() => {
+        throw new Error('readOne failed');
       });
 
-      await projectRoute.getOne(req, res, mockNext);
+      await projectController.getOne(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('getOne failed') }),
+        new GeneralError({ cause: new Error('readOne failed') }),
       );
     });
   });
@@ -212,7 +212,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.post(req, res, mockNext);
+      await projectController.post(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -241,14 +241,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'post').mockImplementation(() => {
-        throw new Error('post failed');
+      jest.spyOn(projectService, 'create').mockImplementation(() => {
+        throw new Error('create failed');
       });
 
-      await projectRoute.post(req, res, mockNext);
+      await projectController.post(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('post failed') }),
+        new GeneralError({ cause: new Error('create failed') }),
       );
     });
   });
@@ -290,7 +290,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.put(req, res, mockNext);
+      await projectController.put(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -320,7 +320,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.put(req, res, mockNext);
+      await projectController.put(req, res, mockNext);
 
       expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
@@ -338,14 +338,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'put').mockImplementation(() => {
-        throw new Error('put failed');
+      jest.spyOn(projectService, 'update').mockImplementation(() => {
+        throw new Error('update failed');
       });
 
-      await projectRoute.put(req, res, mockNext);
+      await projectController.put(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('put failed') }),
+        new GeneralError({ cause: new Error('update failed') }),
       );
     });
   });
@@ -382,7 +382,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.remove(req, res, mockNext);
+      await projectController.remove(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(204);
       expect(JSON.parse(res._getData())).toEqual({
@@ -399,7 +399,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.remove(req, res, mockNext);
+      await projectController.remove(req, res, mockNext);
 
       expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
@@ -412,14 +412,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'remove').mockImplementation(() => {
-        throw new Error('remove failed');
+      jest.spyOn(projectService, 'destroy').mockImplementation(() => {
+        throw new Error('destroy failed');
       });
 
-      await projectRoute.remove(req, res, mockNext);
+      await projectController.remove(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('remove failed') }),
+        new GeneralError({ cause: new Error('destroy failed') }),
       );
     });
   });
@@ -494,7 +494,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -520,7 +520,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(201);
       expect(JSON.parse(res._getData())).toEqual({
@@ -546,7 +546,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
         new NotFoundError({
@@ -565,7 +565,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
         new GeneralError({
@@ -585,7 +585,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
         new GeneralError({
@@ -606,15 +606,15 @@ describe('project.route', () => {
       const mockNext = jest.fn();
 
       jest
-        .spyOn(projectController, 'postMaintenance')
+        .spyOn(projectService, 'scheduleMaintenance')
         .mockImplementation(() => {
-          throw new Error('postMaintenance failed');
+          throw new Error('scheduleMaintenance failed');
         });
 
-      await projectRoute.postMaintenance(req, res, mockNext);
+      await projectController.postMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('postMaintenance failed') }),
+        new GeneralError({ cause: new Error('scheduleMaintenance failed') }),
       );
     });
   });
@@ -661,7 +661,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.putMaintenance(req, res, mockNext);
+      await projectController.putMaintenance(req, res, mockNext);
 
       const parsedRes = JSON.parse(res._getData());
 
@@ -694,7 +694,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.putMaintenance(req, res, mockNext);
+      await projectController.putMaintenance(req, res, mockNext);
 
       expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
@@ -707,7 +707,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.putMaintenance(req, res, mockNext);
+      await projectController.putMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
         new GeneralError({
@@ -726,14 +726,16 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest.spyOn(projectController, 'putMaintenance').mockImplementation(() => {
-        throw new Error('putMaintenance failed');
-      });
+      jest
+        .spyOn(projectService, 'postponeMaintenance')
+        .mockImplementation(() => {
+          throw new Error('postponeMaintenance failed');
+        });
 
-      await projectRoute.putMaintenance(req, res, mockNext);
+      await projectController.putMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('putMaintenance failed') }),
+        new GeneralError({ cause: new Error('postponeMaintenance failed') }),
       );
     });
   });
@@ -770,7 +772,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.removeMaintenance(req, res, mockNext);
+      await projectController.removeMaintenance(req, res, mockNext);
 
       expect(res._getStatusCode()).toBe(204);
       expect(JSON.parse(res._getData())).toEqual({
@@ -787,7 +789,7 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      await projectRoute.removeMaintenance(req, res, mockNext);
+      await projectController.removeMaintenance(req, res, mockNext);
 
       expect(mockNext.mock.calls[0][0]).toBeInstanceOf(NotFoundError);
     });
@@ -800,16 +802,14 @@ describe('project.route', () => {
 
       const mockNext = jest.fn();
 
-      jest
-        .spyOn(projectController, 'removeMaintenance')
-        .mockImplementation(() => {
-          throw new Error('removeMaintenance failed');
-        });
+      jest.spyOn(projectService, 'cancelMaintenance').mockImplementation(() => {
+        throw new Error('cancelMaintenance failed');
+      });
 
-      await projectRoute.removeMaintenance(req, res, mockNext);
+      await projectController.removeMaintenance(req, res, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(
-        new GeneralError({ cause: new Error('removeMaintenance failed') }),
+        new GeneralError({ cause: new Error('cancelMaintenance failed') }),
       );
     });
   });

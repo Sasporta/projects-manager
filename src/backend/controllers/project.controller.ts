@@ -1,141 +1,155 @@
+import { RequestHandler } from 'express';
+
 import * as scheduler from '@services/scheduler.service';
 import * as projectService from '@services/project.service';
 import { ExtendedError, GeneralError } from '@lib/customErrors';
 
-type GetOneData = { id: string };
-
-type PostData = { name: string; description: string; url: string };
-
-type PutData = { id: string; name: string; description: string; url: string };
-
-type RemoveData = { id: string };
-
-type PostMaintenanceData = { projectId: string; done: boolean };
-
-type PutMaintenanceData = { projectId: string };
-
-type RemoveMaintenanceData = { projectId: string };
-
-export const getAll = async () => {
+export const getAll: RequestHandler = async (req, res, next) => {
   try {
     const projects = await projectService.readAll();
 
-    return projects;
+    return res.json({ data: projects, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const getOne = async (data: GetOneData) => {
+export const getOne: RequestHandler = async (req, res, next) => {
   try {
+    const { id } = req.params;
+
+    const data = { id };
+
     const project = await projectService.readOne(data);
 
-    return project;
+    return res.json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const post = async (data: PostData) => {
+export const post: RequestHandler = async (req, res, next) => {
   try {
+    const { name, description, url } = req.body;
+
     const scheduledAt = scheduler.scheduleNextMaintenance();
 
-    const createData = { ...data, scheduledAt };
+    const data = { name, description, url, scheduledAt };
 
-    const project = await projectService.create(createData);
+    const project = await projectService.create(data);
 
-    return project;
+    return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const put = async (data: PutData) => {
+export const put: RequestHandler = async (req, res, next) => {
   try {
+    const { id } = req.params;
+
+    const { name, description, url } = req.body;
+
+    const data = { id, name, description, url };
+
     const project = await projectService.update(data);
 
-    return project;
+    return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const remove = async (data: RemoveData) => {
+export const remove: RequestHandler = async (req, res, next) => {
   try {
-    const project = await projectService.destroy(data);
+    const { id } = req.params;
 
-    return project;
+    const data = { id };
+
+    await projectService.destroy(data);
+
+    return res.status(204).json({ data: null, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const postMaintenance = async (data: PostMaintenanceData) => {
+export const postMaintenance: RequestHandler = async (req, res, next) => {
   try {
+    const { projectId } = req.params;
+
+    const { done } = req.query;
+
     const scheduledAt = scheduler.scheduleNextMaintenance();
 
-    const createData = { ...data, scheduledAt };
+    const data = { projectId, done: done === 'true', scheduledAt };
 
-    const project = await projectService.scheduleMaintenance(createData);
+    const project = await projectService.scheduleMaintenance(data);
 
-    return project;
+    return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const putMaintenance = async (data: PutMaintenanceData) => {
+export const putMaintenance: RequestHandler = async (req, res, next) => {
   try {
+    const { projectId } = req.params;
+
     const scheduledAt = scheduler.scheduleNextMaintenance();
 
-    const createData = { ...data, scheduledAt };
+    const data = { projectId, scheduledAt };
 
-    const project = await projectService.postponeMaintenance(createData);
+    const project = await projectService.postponeMaintenance(data);
 
-    return project;
+    return res.status(201).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
 
-export const removeMaintenance = async (data: RemoveMaintenanceData) => {
+export const removeMaintenance: RequestHandler = async (req, res, next) => {
   try {
-    const project = await projectService.cancelMaintenance(data);
+    const { projectId } = req.params;
 
-    return project;
+    const data = { projectId };
+
+    await projectService.cancelMaintenance(data);
+
+    return res.status(204).json({ data: null, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
-      throw e;
+      next(e);
     } else if (e instanceof Error) {
-      throw new GeneralError({ params: data, cause: e });
+      next(new GeneralError({ cause: e }));
     }
   }
 };
