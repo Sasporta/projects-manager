@@ -14,7 +14,7 @@ describe('project.service', () => {
           url: 'getAll-test-url1',
           maintenance: {
             create: {
-              scheduledAt: new Date(),
+              scheduled_at: new Date(),
             },
           },
         },
@@ -24,7 +24,7 @@ describe('project.service', () => {
           url: 'getAll-test-url2',
           maintenance: {
             create: {
-              scheduledAt: new Date(),
+              scheduled_at: new Date(),
             },
           },
         },
@@ -34,7 +34,7 @@ describe('project.service', () => {
           url: 'getAll-test-url3',
           maintenance: {
             create: {
-              scheduledAt: new Date(),
+              scheduled_at: new Date(),
             },
           },
         },

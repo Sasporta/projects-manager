@@ -32,3 +32,24 @@ export const remove = Joi.object({
     id: validations.uuid,
   }).required(),
 });
+
+export const postMaintenance = Joi.object({
+  params: Joi.object({
+    projectId: validations.uuid,
+  }).required(),
+  query: Joi.object({
+    done: Joi.boolean().required(),
+  }).required(),
+});
+
+export const putMaintenance = Joi.object({
+  params: Joi.object({
+    projectId: validations.uuid,
+  }).required(),
+});
+
+export const removeMaintenance = Joi.object({
+  params: Joi.object({
+    projectId: validations.uuid,
+  }).required(),
+});
