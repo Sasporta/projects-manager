@@ -7,7 +7,7 @@ import * as projectController from '@controllers/project.controller';
 import { GeneralError, NotFoundError } from '@lib/customErrors';
 import * as projectService from '@services/project.service';
 
-describe('project.route', () => {
+describe('project.controller', () => {
   describe('getAll', () => {
     beforeAll(async () => {
       await seeder([
