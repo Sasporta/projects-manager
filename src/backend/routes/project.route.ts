@@ -95,6 +95,62 @@ export const remove: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const postMaintenance: RequestHandler = async (req, res, next) => {
+  try {
+    const { projectId } = req.params;
+
+    const { done } = req.query;
+
+    const data = { projectId, done: done === 'true' };
+
+    const project = await projectController.postMaintenance(data);
+
+    return res.status(201).json({ data: project, error: null });
+  } catch (e) {
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
+    }
+  }
+};
+
+export const putMaintenance: RequestHandler = async (req, res, next) => {
+  try {
+    const { projectId } = req.params;
+
+    const data = { projectId };
+
+    const project = await projectController.putMaintenance(data);
+
+    return res.status(201).json({ data: project, error: null });
+  } catch (e) {
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
+    }
+  }
+};
+
+export const removeMaintenance: RequestHandler = async (req, res, next) => {
+  try {
+    const { projectId } = req.params;
+
+    const data = { projectId };
+
+    await projectController.removeMaintenance(data);
+
+    return res.status(204).json({ data: null, error: null });
+  } catch (e) {
+    if (e instanceof ExtendedError) {
+      next(e);
+    } else if (e instanceof Error) {
+      next(new GeneralError({ cause: e }));
+    }
+  }
+};
+
 router.get('/project', getAll);
 
 router.get('/project/:id', validator(projectValidations.getOne), getOne);
@@ -104,5 +160,23 @@ router.post('/project', validator(projectValidations.post), post);
 router.put('/project/:id', validator(projectValidations.put), put);
 
 router.delete('/project/:id', validator(projectValidations.remove), remove);
+
+router.post(
+  '/project/:projectId/maintenance',
+  validator(projectValidations.postMaintenance),
+  postMaintenance,
+);
+
+router.put(
+  '/project/:projectId/maintenance',
+  validator(projectValidations.putMaintenance),
+  putMaintenance,
+);
+
+router.delete(
+  '/project/:projectId/maintenance/',
+  validator(projectValidations.removeMaintenance),
+  removeMaintenance,
+);
 
 export default router;

@@ -5,7 +5,7 @@ export const projects = [
     url: 'https://projects-manager.com',
     maintenance: {
       create: {
-        scheduledAt: new Date(),
+        scheduled_at: new Date(),
       },
     },
   },
@@ -15,7 +15,7 @@ export const projects = [
     url: 'https://backlog.com',
     maintenance: {
       create: {
-        scheduledAt: new Date(),
+        scheduled_at: new Date(),
       },
     },
   },
@@ -25,7 +25,7 @@ export const projects = [
     url: 'https://portfolio.com',
     maintenance: {
       create: {
-        scheduledAt: new Date(),
+        scheduled_at: new Date(),
       },
     },
   },

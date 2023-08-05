@@ -41,7 +41,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/frontend/next-env.d.ts",
-    "src/frontend/.next/types/**/*.ts"
+    "src/frontend/.next/types/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": ["src/backend/prisma/seeds"]
 }

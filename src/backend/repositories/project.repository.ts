@@ -23,28 +23,30 @@ type DestroyData = { id: string };
 
 export const readAll = async () => {
   try {
-    const findManyArgs = {
+    const findManyData = {
       select: {
         id: true,
         name: true,
         description: true,
         url: true,
-        createdAt: true,
+        created_at: true,
         maintenance: {
           select: {
-            scheduledAt: true,
-            doneAt: true,
+            id: true,
+            hours: true,
+            scheduled_at: true,
+            done_at: true,
           },
           take: 2,
           orderBy: {
-            scheduledAt: Prisma.SortOrder.desc,
+            scheduled_at: Prisma.SortOrder.desc,
           },
         },
       },
     };
 
     // TODO: Add pagination and limit
-    const projects = await prisma.project.findMany(findManyArgs);
+    const projects = await prisma.project.findMany(findManyData);
 
     return projects;
   } catch (e) {
@@ -60,28 +62,30 @@ export const readOne = async (data: ReadOneData) => {
   try {
     const { id } = data;
 
-    const findUniqueArgs = {
+    const findUniqueData = {
       where: { id },
       select: {
         id: true,
         name: true,
         description: true,
         url: true,
-        createdAt: true,
+        created_at: true,
         maintenance: {
           select: {
-            scheduledAt: true,
-            doneAt: true,
+            id: true,
+            hours: true,
+            scheduled_at: true,
+            done_at: true,
           },
           take: 2,
           orderBy: {
-            scheduledAt: Prisma.SortOrder.desc,
+            scheduled_at: Prisma.SortOrder.desc,
           },
         },
       },
     };
 
-    const project = await prisma.project.findUnique(findUniqueArgs);
+    const project = await prisma.project.findUnique(findUniqueData);
 
     if (!project) {
       throw new NotFoundError({
@@ -111,7 +115,7 @@ export const create = async (data: CreateData) => {
         url,
         maintenance: {
           create: {
-            scheduledAt,
+            scheduled_at: scheduledAt,
           },
         },
       },
@@ -120,10 +124,13 @@ export const create = async (data: CreateData) => {
         name: true,
         description: true,
         url: true,
-        createdAt: true,
+        created_at: true,
         maintenance: {
           select: {
-            scheduledAt: true,
+            id: true,
+            hours: true,
+            scheduled_at: true,
+            done_at: true,
           },
         },
       },
@@ -157,15 +164,17 @@ export const update = async (data: UpdateData) => {
         name: true,
         description: true,
         url: true,
-        createdAt: true,
+        created_at: true,
         maintenance: {
           select: {
-            scheduledAt: true,
-            doneAt: true,
+            id: true,
+            hours: true,
+            scheduled_at: true,
+            done_at: true,
           },
           take: 2,
           orderBy: {
-            scheduledAt: Prisma.SortOrder.desc,
+            scheduled_at: Prisma.SortOrder.desc,
           },
         },
       },
