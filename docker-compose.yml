@@ -8,10 +8,9 @@ services:
     ports:
       - 5432:5432
     env_file: .env
-  # TODO: decide if to seed the db with the postgres container (volumes?) or with the node container (entrypoint?)
-  # volumes:
-  #   - ./src/seeds/localEnv/docker/seed_companies.sql:/docker-entrypoint-initdb.d/seed_companies.sql
-  #   - ./src/seeds/localEnv/docker/seed_employees.sql:/docker-entrypoint-initdb.d/seed_employees.sql
+    volumes:
+      - ./src/backend/prisma/seed/dockerVolumes/seedAroject.sql:/docker-entrypoint-initdb.d/a.sql
+      - ./src/backend/prisma/seed/dockerVolumes/seedMaintenance.sql:/docker-entrypoint-initdb.d/b.sql
 
 networks:
   default:
