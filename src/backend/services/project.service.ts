@@ -35,7 +35,7 @@ export const readAll = async () => {
     const projects = await projectRepository.readAll();
 
     if (!projects) {
-      throw new GeneralError({ message: `project is ${projects}` });
+      throw new GeneralError({ message: `projects is ${projects}` });
     }
 
     const formattedProjects = projects.map(project => ({
