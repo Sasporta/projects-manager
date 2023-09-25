@@ -48,4 +48,19 @@ const init = async () => {
   }
 };
 
+// Promise rejections in Node.js only cause warnings. I want them to throw errors, so I can handle them properly.
+process.on('unhandledRejection', e => {
+  throw e;
+});
+
+// Uncaught exceptions are errors that are raised during execution and are not handled by a try/catch block or a promise catch handler.
+process.on('uncaughtException', e => {
+  // TODO: replace with logger
+  console.error(
+    `UncaughtException Error during Projects Manager, e.stack: ${e.stack}`,
+  );
+
+  process.exit(1);
+});
+
 init();
