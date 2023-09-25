@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 import * as scheduler from '@services/scheduler.service';
 import * as projectService from '@services/project.service';
-import { ExtendedError, GeneralError } from '@lib/customErrors';
+import { ExtendedError, GeneralError } from '@lib/customErrors.lib';
 
 export const getAll: RequestHandler = async (req, res, next) => {
   try {

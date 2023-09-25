@@ -1,6 +1,6 @@
 import express from 'express';
 
-import validator from '@middleware/validator';
+import validator from '@middleware/validator.middleware';
 import * as projectController from '@controllers/project.controller';
 import * as projectValidations from '@validations/project.validation';
 

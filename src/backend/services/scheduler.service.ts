@@ -1,5 +1,5 @@
-import { getFutureSaturdayDate } from '@utils/dates';
-import { ExtendedError, GeneralError } from '@lib/customErrors';
+import { getFutureSaturdayDate } from '@utils/dates.util';
+import { ExtendedError, GeneralError } from '@lib/customErrors.lib';
 import * as maintenanceRepository from '@repositories/maintenance.repository';
 
 export const scheduleNextMaintenance = async () => {

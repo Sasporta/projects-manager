@@ -2,10 +2,10 @@ import { randomUUID } from 'crypto';
 import { createMocks } from 'node-mocks-http';
 
 import seeder from '@seed/seeder';
-import { prisma } from '@lib/prisma';
-import * as projectController from '@controllers/project.controller';
-import { GeneralError, NotFoundError } from '@lib/customErrors';
+import { prisma } from '@lib/prisma.lib';
 import * as projectService from '@services/project.service';
+import { GeneralError, NotFoundError } from '@lib/customErrors.lib';
+import * as projectController from '@controllers/project.controller';
 
 describe('project.controller', () => {
   describe('getAll', () => {

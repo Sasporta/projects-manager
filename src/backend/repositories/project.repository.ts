@@ -1,7 +1,11 @@
 import { Prisma } from '@prisma/client';
 
-import { prisma } from '@lib/prisma';
-import { ExtendedError, GeneralError, NotFoundError } from '@lib/customErrors';
+import { prisma } from '@lib/prisma.lib';
+import {
+  ExtendedError,
+  GeneralError,
+  NotFoundError,
+} from '@lib/customErrors.lib';
 
 type ReadOneData = { id: string };
 

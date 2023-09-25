@@ -1,12 +1,12 @@
 import Joi from 'joi';
 import { RequestHandler } from 'express';
 
-import getReqData from '@utils/getReqData';
+import getReqData from '@utils/getReqData.util';
 import {
   ExtendedError,
   GeneralError,
   ValidationError,
-} from '@lib/customErrors';
+} from '@lib/customErrors.lib';
 
 type Validator = (schema: Joi.Schema) => RequestHandler;
 

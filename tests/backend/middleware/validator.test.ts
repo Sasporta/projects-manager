@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 import { createMocks } from 'node-mocks-http';
 
-import validator from '@middleware/validator';
-import { GeneralError, ValidationError } from '@lib/customErrors';
+import validator from '@middleware/validator.middleware';
+import { GeneralError, ValidationError } from '@lib/customErrors.lib';
 import * as projectValidations from '@validations/project.validation';
 
 describe('validator', () => {
