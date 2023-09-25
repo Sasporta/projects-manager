@@ -40,7 +40,11 @@ export const post: RequestHandler = async (req, res, next) => {
   try {
     const { name, description, url } = req.body;
 
-    const scheduledAt = scheduler.scheduleNextMaintenance();
+    const scheduledAt = await scheduler.scheduleNextMaintenance();
+
+    if (!scheduledAt) {
+      throw new GeneralError({ message: `scheduledAt is ${scheduledAt}` });
+    }
 
     const data = { name, description, url, scheduledAt };
 
@@ -100,7 +104,11 @@ export const postMaintenance: RequestHandler = async (req, res, next) => {
 
     const { done } = req.query;
 
-    const scheduledAt = scheduler.scheduleNextMaintenance();
+    const scheduledAt = await scheduler.scheduleNextMaintenance();
+
+    if (!scheduledAt) {
+      throw new GeneralError({ message: `scheduledAt is ${scheduledAt}` });
+    }
 
     const data = { projectId, done: done === 'true', scheduledAt };
 
@@ -120,7 +128,11 @@ export const putMaintenance: RequestHandler = async (req, res, next) => {
   try {
     const { projectId } = req.params;
 
-    const scheduledAt = scheduler.scheduleNextMaintenance();
+    const scheduledAt = await scheduler.scheduleNextMaintenance();
+
+    if (!scheduledAt) {
+      throw new GeneralError({ message: `scheduledAt is ${scheduledAt}` });
+    }
 
     const data = { projectId, scheduledAt };
 

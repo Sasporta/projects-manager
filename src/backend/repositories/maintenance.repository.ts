@@ -9,6 +9,33 @@ type UpdateData = { id: string; scheduledAt?: Date; done?: boolean };
 
 type DestroyData = { id: string };
 
+export const getLatest = async () => {
+  try {
+    const getLatestData = {
+      orderBy: {
+        scheduled_at: Prisma.SortOrder.desc,
+      },
+      select: {
+        id: true,
+        hours: true,
+        scheduled_at: true,
+        done_at: true,
+        take: 1,
+      },
+    };
+
+    const maintenance = await prisma.maintenance.findMany(getLatestData);
+
+    return maintenance;
+  } catch (e) {
+    if (e instanceof ExtendedError) {
+      throw e;
+    } else if (e instanceof Error) {
+      throw new GeneralError({ cause: e });
+    }
+  }
+};
+
 export const create = async (data: CreateData) => {
   try {
     const { projectId, scheduledAt } = data;
