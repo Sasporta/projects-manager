@@ -3,7 +3,8 @@ import express from 'express';
 
 import config from '@config';
 import routes from '@routes';
-import errorHandler from '@middleware/errorHandler';
+import * as log from '@lib/log.lib';
+import errorHandler from '@middleware/errorHandler.middleware';
 
 const init = async () => {
   try {
@@ -31,15 +32,14 @@ const init = async () => {
 
     server.listen(port, () => {
       try {
-        console.log('Projects Manager running on port ', port);
+        log.error(`Projects Manager running on port ${port}`);
       } catch (e) {
         throw e;
       }
     });
   } catch (e) {
     if (e instanceof Error) {
-      // TODO: replace with logger
-      console.error(
+      log.error(
         `Error during Projects Manager initialization, e.stack: ${e.stack}`,
       );
     }
@@ -55,8 +55,7 @@ process.on('unhandledRejection', e => {
 
 // Uncaught exceptions are errors that are raised during execution and are not handled by a try/catch block or a promise catch handler.
 process.on('uncaughtException', e => {
-  // TODO: replace with logger
-  console.error(
+  log.error(
     `UncaughtException Error during Projects Manager, e.stack: ${e.stack}`,
   );
 

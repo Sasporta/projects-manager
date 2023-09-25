@@ -1,5 +1,5 @@
-import { prisma } from '@lib/prisma';
-import { GeneralError } from '@lib/customErrors';
+import { prisma } from '@lib/prisma.lib';
+import { GeneralError } from '@lib/customErrors.lib';
 import * as schedulerService from '@services/scheduler.service';
 import * as maintenanceRepository from '@repositories/maintenance.repository';
 

@@ -1,6 +1,6 @@
 import { createMocks } from 'node-mocks-http';
 
-import getReqData from '@utils/getReqData';
+import getReqData from '@utils/getReqData.util';
 
 describe('getReqData', () => {
   it('should return an object with params, query and body', () => {

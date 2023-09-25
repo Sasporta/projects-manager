@@ -1,5 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 
+import * as log from '@lib/log.lib';
+
 type ErrorMessageMap = {
   [key: number]: string;
 };
@@ -14,19 +16,16 @@ const errorMessageMap: ErrorMessageMap = {
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   try {
     if (err.isTrusted) {
-      // TODO: replace with logger
-      console.warn(err.fullError());
+      log.warn(err.fullError());
     } else {
-      // TODO: replace with logger
-      console.error(err.fullError());
+      log.error(err.fullError());
     }
 
     return res
       .status(err.code)
       .json({ data: null, error: errorMessageMap[err.code] });
   } catch (e) {
-    // TODO: replace with logger
-    console.error('unexpected error: ', e);
+    log.error(`unexpected error: ${JSON.stringify(e, null ,2)}`);
 
     return res
       .status(500)

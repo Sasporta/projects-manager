@@ -1,6 +1,10 @@
 import * as projectRepository from '@repositories/project.repository';
 import * as maintenanceRepository from '@repositories/maintenance.repository';
-import { ExtendedError, GeneralError, NotFoundError } from '@lib/customErrors';
+import {
+  ExtendedError,
+  GeneralError,
+  NotFoundError,
+} from '@lib/customErrors.lib';
 
 type ReadOneData = { id: string };
 

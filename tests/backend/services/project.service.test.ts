@@ -1,6 +1,6 @@
 import seeder from '@seed/seeder';
-import { prisma } from '@lib/prisma';
-import { GeneralError } from '@lib/customErrors';
+import { prisma } from '@lib/prisma.lib';
+import { GeneralError } from '@lib/customErrors.lib';
 import * as projectService from '@services/project.service';
 import * as projectRepository from '@repositories/project.repository';
 

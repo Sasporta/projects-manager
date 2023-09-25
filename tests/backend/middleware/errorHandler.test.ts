@@ -1,11 +1,11 @@
 import { createMocks } from 'node-mocks-http';
 
-import errorHandler from '@middleware/errorHandler';
+import errorHandler from '@middleware/errorHandler.middleware';
 import {
   GeneralError,
   NotFoundError,
   ValidationError,
-} from '@lib/customErrors';
+} from '@lib/customErrors.lib';
 
 describe('errorHandler', () => {
   const consoleWarnSpy = jest
@@ -14,7 +14,7 @@ describe('errorHandler', () => {
 
   const consoleErrorSpy = jest
     .spyOn(console, 'error')
-    .mockImplementation(() => {});;
+    .mockImplementation(() => {});
 
   it('should return response with status code 404 and error message', () => {
     const { req, res } = createMocks();
