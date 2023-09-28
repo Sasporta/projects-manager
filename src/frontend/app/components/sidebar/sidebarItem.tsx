@@ -2,7 +2,6 @@ import Image from 'next/image';
 
 import styles from './sidebarItem.module.css';
 
-
 interface SidebarProps {
   text: string;
   img: string;
