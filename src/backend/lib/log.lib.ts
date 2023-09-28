@@ -1,4 +1,4 @@
-// TODO: should probably gey an object and construct the message from it
+// TODO: should probably get an object and construct the message from it
 export const info = (msg: string) => {
   // TODO: replace with logger
   console.log(msg);
