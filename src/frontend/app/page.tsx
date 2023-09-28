@@ -1,5 +1,6 @@
+import Main from './components/main';
 import styles from './page.module.css';
-import Sidebar from './components/sidebar/sidebar';
+import Sidebar from './components/sidebar';
 
 // TODO: this should probably be dynamic or moved to a config file
 const items = [
@@ -13,10 +14,13 @@ const items = [
   },
 ];
 
-export default function ProjectsManager() {
+function ProjectsManager() {
   return (
     <div className={styles.container}>
       <Sidebar items={items} />
+      <Main />
     </div>
   );
 }
+
+export default ProjectsManager;
