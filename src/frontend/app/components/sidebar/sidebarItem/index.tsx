@@ -7,7 +7,7 @@ interface SidebarProps {
   img: string;
 }
 
-export default function SidebarItem({ text, img }: SidebarProps): JSX.Element {
+function SidebarItem({ text, img }: SidebarProps): JSX.Element {
   return (
     <li className={styles.container}>
       <Image width={16} height={16} src={img} alt='' />
@@ -15,3 +15,5 @@ export default function SidebarItem({ text, img }: SidebarProps): JSX.Element {
     </li>
   );
 }
+
+export default SidebarItem;
