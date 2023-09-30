@@ -1,13 +1,7 @@
-import Image from 'next/image';
+'use client';
 
 import styles from './project.module.css';
-
-const images = {
-  open: 'https://uploads-ssl.webflow.com/6488434242d07f8e8d4f615f/64886bf9374c31b5a1b5562b_icons8-new-tab-64.png',
-  edit: 'https://uploads-ssl.webflow.com/6488434242d07f8e8d4f615f/64886a92a3922c655f012862_icons8-edit-icon.png',
-  delete:
-    'https://uploads-ssl.webflow.com/6488434242d07f8e8d4f615f/64886a1837cf11c6fda5e696_icons8-recycle-bin-icon.png',
-};
+import ActionButtons from './actionButtons';
 
 interface ProjectProps {
   name: string;
@@ -19,8 +13,12 @@ interface ProjectProps {
 }
 
 function Project({ name, url, nextMaintenance }: ProjectProps): JSX.Element {
+  const onClick = () => {
+    // TODO: Implement onClick
+  };
+
   return (
-    <li className={styles.container}>
+    <li className={styles.container} onClick={onClick}>
       <div>
         <a href={url} target='_blank' rel='noreferrer' className={styles.name}>
           {name}
@@ -30,11 +28,7 @@ function Project({ name, url, nextMaintenance }: ProjectProps): JSX.Element {
         <span className={styles.label}>Next Maintenance:</span>
         <span className={styles.date}>{nextMaintenance}</span>
       </div>
-      <div className={styles.actions}>
-        <Image width={18} height={18} src={images.open} alt='' />
-        <Image width={18} height={18} src={images.edit} alt='' />
-        <Image width={18} height={18} src={images.delete} alt='' />
-      </div>
+      <ActionButtons url={url} />
     </li>
   );
 }

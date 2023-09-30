@@ -1,0 +1,9 @@
+.container {
+  background: transparent;
+  border: none;
+  height: 18px;
+}
+
+.container:hover {
+  cursor: pointer;
+}

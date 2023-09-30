@@ -8,8 +8,13 @@
   padding: 12px 28px;
 }
 
+.container:hover {
+  background: #4363d7;
+  transition: 0.2s ease-in;
+}
+
 .name {
-  color: #6267e8;
+  color: white;
   font-weight: 500;
   font-size: 14px;
   text-decoration: none;
@@ -29,11 +34,4 @@
 .date {
   color: #aeb9e1;
   font-size: 14px;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  gap: 10px;
 }
