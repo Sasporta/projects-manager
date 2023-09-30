@@ -6,6 +6,10 @@
   margin-bottom: 10px;
 }
 
+.container:hover {
+  cursor: pointer;
+}
+
 .text {
   font-weight: 500;
   font-size: 16px;
