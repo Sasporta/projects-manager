@@ -1,6 +1,7 @@
-import Main from './components/main';
 import styles from './page.module.css';
-import Sidebar from './components/sidebar';
+import Main from './components/main/Main';
+import Sidebar from './components/sidebar/sidebar';
+import * as projectService from '@services/project.service';
 
 // TODO: this should probably be dynamic or moved to a config file
 const items = [
@@ -14,11 +15,13 @@ const items = [
   },
 ];
 
-function ProjectsManager() {
+async function ProjectsManager() {
+  const projects = await projectService.readAll();
+
   return (
     <div className={styles.container}>
       <Sidebar items={items} />
-      <Main />
+      <Main projects={projects} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import * as validations from '@common/common.validations';
+import * as validations from '@common/validations.common';
 
 describe('common.validations', () => {
   describe('validations.uuid', () => {

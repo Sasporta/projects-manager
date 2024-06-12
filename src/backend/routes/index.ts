@@ -4,6 +4,6 @@ import projectRoutes from './project.route';
 
 const router = express.Router();
 
-router.use('/api', projectRoutes);
+router.use('/api/v1', projectRoutes);
 
 export default router;

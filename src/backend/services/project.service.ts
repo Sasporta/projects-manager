@@ -42,15 +42,20 @@ export const readAll = async () => {
       throw new GeneralError({ message: `projects is ${projects}` });
     }
 
-    const formattedProjects = projects.map(project => ({
-      id: project.id,
-      name: project.name,
-      description: project.description,
-      url: project.url,
-      createdAt: project.created_at,
-      nextMaintenance: project.maintenance?.[0]?.scheduled_at ?? null,
-      lastMaintenance: project.maintenance?.[1]?.done_at ?? null,
-    }));
+    const formattedProjects = projects.map(project => {
+      const { created_at, maintenance, ...properties } = project;
+
+      const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+      const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
+      return {
+        ...properties,
+        createdAt: created_at.toLocaleDateString(),
+        nextMaintenance: next,
+        lastMaintenance: last,
+      };
+    });
 
     return formattedProjects;
   } catch (e) {
@@ -73,14 +78,17 @@ export const readOne = async (data: ReadOneData) => {
       });
     }
 
+    const { created_at, maintenance, ...properties } = project;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+    const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
     const formattedProject = {
-      id: project.id,
-      name: project.name,
-      description: project.description,
-      url: project.url,
-      createdAt: project.created_at,
-      nextMaintenance: project.maintenance?.[0]?.scheduled_at ?? null,
-      lastMaintenance: project.maintenance?.[1]?.done_at ?? null,
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
+      lastMaintenance: last,
     };
 
     return formattedProject;
@@ -104,13 +112,14 @@ export const create = async (data: CreateData) => {
       });
     }
 
+    const { created_at, maintenance, ...properties } = project;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
     const formattedProject = {
-      id: project.id,
-      name: project.name,
-      description: project.description,
-      url: project.url,
-      createdAt: project.created_at,
-      nextMaintenance: project.maintenance?.[0]?.scheduled_at ?? null,
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
       lastMaintenance: null,
     };
 
@@ -135,14 +144,17 @@ export const update = async (data: UpdateData) => {
       });
     }
 
+    const { created_at, maintenance, ...properties } = project;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+    const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
     const formattedProject = {
-      id: project.id,
-      name: project.name,
-      description: project.description,
-      url: project.url,
-      createdAt: project.created_at,
-      nextMaintenance: project.maintenance?.[0]?.scheduled_at ?? null,
-      lastMaintenance: project.maintenance?.[1]?.done_at ?? null,
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
+      lastMaintenance: last,
     };
 
     return formattedProject;
@@ -211,12 +223,12 @@ export const scheduleMaintenance = async (data: ScheduleMaintenanceData) => {
       });
     }
 
-    const maintenance = await maintenanceRepository.create(data);
+    const newMaintenance = await maintenanceRepository.create(data);
 
-    if (!maintenance) {
+    if (!newMaintenance) {
       throw new GeneralError({
-        message: `maintenance is ${maintenance}`,
-        params: { data, maintenance },
+        message: `maintenance is ${newMaintenance}`,
+        params: { data, newMaintenance },
       });
     }
 
@@ -229,14 +241,17 @@ export const scheduleMaintenance = async (data: ScheduleMaintenanceData) => {
       });
     }
 
+    const { created_at, maintenance, ...properties } = updatedProject;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+    const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
     const formattedProject = {
-      id: updatedProject.id,
-      name: updatedProject.name,
-      description: updatedProject.description,
-      url: updatedProject.url,
-      createdAt: updatedProject.created_at,
-      nextMaintenance: updatedProject.maintenance?.[0]?.scheduled_at ?? null,
-      lastMaintenance: updatedProject.maintenance?.[1]?.done_at ?? null,
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
+      lastMaintenance: last,
     };
 
     return formattedProject;
@@ -272,12 +287,12 @@ export const postponeMaintenance = async (data: PostponeMaintenanceData) => {
 
     const updateData = { id: project.maintenance[0].id, scheduledAt };
 
-    const maintenance = await maintenanceRepository.update(updateData);
+    const updatedMaintenance = await maintenanceRepository.update(updateData);
 
-    if (!maintenance) {
+    if (!updatedMaintenance) {
       throw new GeneralError({
-        message: `maintenance is ${maintenance}`,
-        params: { data, maintenance },
+        message: `maintenance is ${updatedMaintenance}`,
+        params: { data, updatedMaintenance },
       });
     }
 
@@ -290,14 +305,17 @@ export const postponeMaintenance = async (data: PostponeMaintenanceData) => {
       });
     }
 
+    const { created_at, maintenance, ...properties } = updatedProject;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+    const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
     const formattedProject = {
-      id: updatedProject.id,
-      name: updatedProject.name,
-      description: updatedProject.description,
-      url: updatedProject.url,
-      createdAt: updatedProject.created_at,
-      nextMaintenance: updatedProject.maintenance?.[0]?.scheduled_at ?? null,
-      lastMaintenance: updatedProject.maintenance?.[1]?.done_at ?? null,
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
+      lastMaintenance: last,
     };
 
     return formattedProject;

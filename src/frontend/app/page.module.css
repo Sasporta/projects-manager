@@ -1,6 +1,7 @@
 .container {
-  background-color: #0f1935;
-  color: white;
+  background-color: #080f25;
+  color: #fbfbfb;
   display: flex;
   height: 100%;
+  position: relative;
 }

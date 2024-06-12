@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import * as validations from '@common/common.validations';
+import * as validations from '@common/validations.common';
 
 export const getOne = Joi.object({
   params: Joi.object({

@@ -1,0 +1,10 @@
+TODO:
+- FRONTEND
+* use pallets for colors (css variables)
+* when ordering the list - no maintenance should be last
+* tests
+
+- to fix all the double checking when fetching entity (in repo and service) - why repo return item | undifined
+- check all the todo in the project
+- deployment (ts to js etc...)
+- add colors to github actions build logs

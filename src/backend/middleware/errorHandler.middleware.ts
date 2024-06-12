@@ -25,13 +25,10 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
       .status(err.code)
       .json({ data: null, error: errorMessageMap[err.code] });
   } catch (e) {
-    log.error(`unexpected error: ${JSON.stringify(e, null ,2)}`);
+    log.error(`unexpected error: ${JSON.stringify(e, null, 2)}`);
 
-    return res
-      .status(500)
-      .json({ data: null, error: errorMessageMap[500] });
+    return res.status(500).json({ data: null, error: errorMessageMap[500] });
   }
-
 };
 
 export default errorHandler;
