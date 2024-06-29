@@ -4,6 +4,8 @@ import { ProjectListType, ProjectType } from '#types/project';
 
 type InitialState = ProjectListType | null;
 
+type State = { projectList: InitialState };
+
 type setProjectListAction = {
   payload: ProjectListType;
 };
@@ -83,7 +85,6 @@ export const {
   orderProjectList,
 } = projectListSlice.actions;
 
-// TODO: type the state parameter
-export const getProjectList = state => state.projectList;
+export const getProjectList = (state: State) => state.projectList;
 
 export default projectListSlice;

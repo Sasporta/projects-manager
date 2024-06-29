@@ -4,6 +4,8 @@ import { ProjectType } from '#types/project';
 
 type InitialState = ProjectType | null;
 
+type State = { chosenProject: InitialState };
+
 type SetChosenProjectAction = {
   payload: ProjectType;
 };
@@ -22,7 +24,6 @@ const chosenProjectSlice = createSlice({
 
 export const { setChosenProject } = chosenProjectSlice.actions;
 
-// TODO: type the state parameter
-export const getChosenProject = (state) => state.chosenProject;
+export const getChosenProject = (state: State) => state.chosenProject;
 
 export default chosenProjectSlice;

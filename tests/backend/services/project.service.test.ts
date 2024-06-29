@@ -55,8 +55,8 @@ describe('project.service', () => {
           description: 'getAll-test-description1',
           url: 'getAll-test-url1',
           lastMaintenance: null,
-          nextMaintenance: expect.any(Date),
-          createdAt: expect.any(Date),
+          nextMaintenance: expect.any(String),
+          createdAt: expect.any(String),
         },
         {
           id: expect.any(String),
@@ -64,8 +64,8 @@ describe('project.service', () => {
           description: 'getAll-test-description2',
           url: 'getAll-test-url2',
           lastMaintenance: null,
-          nextMaintenance: expect.any(Date),
-          createdAt: expect.any(Date),
+          nextMaintenance: expect.any(String),
+          createdAt: expect.any(String),
         },
         {
           id: expect.any(String),
@@ -73,8 +73,8 @@ describe('project.service', () => {
           description: 'getAll-test-description3',
           url: 'getAll-test-url3',
           lastMaintenance: null,
-          nextMaintenance: expect.any(Date),
-          createdAt: expect.any(Date),
+          nextMaintenance: expect.any(String),
+          createdAt: expect.any(String),
         },
       ]);
     });

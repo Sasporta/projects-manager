@@ -351,12 +351,12 @@ export const cancelMaintenance = async (data: CancelMaintenanceData) => {
 
     const destroyData = { id: project.maintenance[0].id };
 
-    const maintenance = await maintenanceRepository.destroy(destroyData);
+    const deletedMaintenance = await maintenanceRepository.destroy(destroyData);
 
-    if (!maintenance) {
+    if (!deletedMaintenance) {
       throw new GeneralError({
-        message: `maintenance is ${maintenance}`,
-        params: { data, maintenance },
+        message: `maintenance is ${deletedMaintenance}`,
+        params: { data, deletedMaintenance },
       });
     }
 
@@ -369,7 +369,20 @@ export const cancelMaintenance = async (data: CancelMaintenanceData) => {
       });
     }
 
-    return updatedProject;
+    const { created_at, maintenance, ...properties } = updatedProject;
+
+    const next = maintenance[0]?.scheduled_at?.toLocaleDateString() ?? null;
+
+    const last = maintenance[1]?.done_at?.toLocaleDateString() ?? null;
+
+    const formattedProject = {
+      ...properties,
+      createdAt: created_at.toLocaleDateString(),
+      nextMaintenance: next,
+      lastMaintenance: last,
+    };
+
+    return formattedProject;
   } catch (e) {
     if (e instanceof ExtendedError) {
       throw e;

@@ -9,6 +9,8 @@ type InitialState = {
   project: ProjectType | null;
 };
 
+type State = { modal: InitialState };
+
 type SetModalAction = {
   payload: ModalType;
 };
@@ -30,7 +32,6 @@ const modalSlice = createSlice({
 
 export const { setModal, closeModal } = modalSlice.actions;
 
-// TODO: type the state parameter
-export const getModal = state => state.modal;
+export const getModal = (state: State) => state.modal;
 
 export default modalSlice;
