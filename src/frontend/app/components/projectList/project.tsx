@@ -37,7 +37,7 @@ function Project(project: ProjectProps) {
 
   return (
     <Container onClick={onClick}>
-      <Indication isMaintained={nextMaintenance} />
+      <Indication data-isMaintained={nextMaintenance} />
       <div>
         <Name href={url} target='_blank' rel='noreferrer'>
           {name}
@@ -70,7 +70,7 @@ const Container = styled.li`
 `;
 
 const Indication = styled.span`
-  background: ${({ isMaintained }) => (isMaintained ? '#2ce02c' : '#f82e2e')};
+  background: ${props => (props['data-isMaintained'] ? '#2ce02c' : '#f82e2e')};
   border-radius: 50%;
   height: 10px;
   margin-top: 4px;
