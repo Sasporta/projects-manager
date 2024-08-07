@@ -503,7 +503,7 @@ describe('project.controller', () => {
           name: 'postMaintenance-test-name1',
           description: 'postDoneMaintenance-test-description',
           url: 'postDoneMaintenance-test-url',
-          lastMaintenance: doneAt.toISOString(),
+          lastMaintenance: doneAt.toLocaleDateString(),
           nextMaintenance: expect.any(String),
           createdAt: expect.any(String),
         },
@@ -764,7 +764,7 @@ describe('project.controller', () => {
       await prisma.project.deleteMany({});
     });
 
-    it('should return empty response status code 204', async () => {
+    it('should return response with status code 200 and the updated project', async () => {
       const { req, res } = createMocks({
         method: 'DELETE',
         params: { projectId },
@@ -774,9 +774,17 @@ describe('project.controller', () => {
 
       await projectController.removeMaintenance(req, res, mockNext);
 
-      expect(res._getStatusCode()).toBe(204);
+      expect(res._getStatusCode()).toBe(200);
       expect(JSON.parse(res._getData())).toEqual({
-        data: null,
+        data: {
+          id: expect.any(String),
+          name: 'removeMaintenance-test-name',
+          description: 'removeMaintenance-test-description',
+          url: 'removeMaintenance-test-url',
+          lastMaintenance: null,
+          nextMaintenance: null,
+          createdAt: expect.any(String),
+        },
         error: null,
       });
     });

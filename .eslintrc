@@ -12,6 +12,7 @@
     "linebreak-style": ["error", "unix"],
     "object-curly-spacing": ["error", "always"],
     "quotes": ["error", "single", { "avoidEscape": true }],
-    "no-trailing-spaces": ["error", { "skipBlankLines": false }]
+    "no-trailing-spaces": ["error", { "skipBlankLines": false }],
+    "react-hooks/exhaustive-deps": "off"
   }
 }

@@ -154,9 +154,9 @@ export const removeMaintenance: RequestHandler = async (req, res, next) => {
 
     const data = { projectId };
 
-    await projectService.cancelMaintenance(data);
+    const project = await projectService.cancelMaintenance(data);
 
-    return res.status(204).json({ data: null, error: null });
+    return res.status(200).json({ data: project, error: null });
   } catch (e) {
     if (e instanceof ExtendedError) {
       next(e);

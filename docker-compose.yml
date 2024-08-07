@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:latest
@@ -9,7 +7,7 @@ services:
       - 5432:5432
     env_file: .env
     volumes:
-      - ./src/backend/prisma/seed/dockerVolumes/seedAroject.sql:/docker-entrypoint-initdb.d/a.sql
+      - ./src/backend/prisma/seed/dockerVolumes/seedProject.sql:/docker-entrypoint-initdb.d/a.sql
       - ./src/backend/prisma/seed/dockerVolumes/seedMaintenance.sql:/docker-entrypoint-initdb.d/b.sql
 
 networks:

@@ -13,11 +13,26 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@config": ["../backend/config"],
+      "@config/*": ["../backend/config/*"],
+      "@controllers/*": ["../backend/controllers/*"],
+      "@lib/*": ["../backend/lib/*"],
+      "@middleware/*": ["../backend/middleware/*"],
+      "@seed/*": ["../backend/prisma/seed/*"],
+      "@repositories/*": ["../backend/repositories/*"],
+      "@routes": ["../backend/routes"],
+      "@routes/*": ["../backend/routes/*"],
+      "@services/*": ["../backend/services/*"],
+      "@utils/*": ["../backend/utils/*"],
+      "@validations/*": ["../backend/validations/*"],
+      "@common/*": ["../common/*"],
+      "#slices/*": ["../frontend/redux/slices/*"],
+      "#utils/*": ["../frontend/utils/*"],
+      "#types/*": ["../frontend/types/*"],
+      "#fe/*": ["../frontend/*"],
+    }
   },
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
